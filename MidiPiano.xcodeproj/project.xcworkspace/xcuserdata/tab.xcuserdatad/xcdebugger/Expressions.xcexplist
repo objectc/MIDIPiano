@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[ViewController getNoteByPianoKey:]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController touchesBegan:withEvent:]:ViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "note">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MidiAudioManager startPlayNote:]:MidiAudioManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "&amp;note">
+            </PersistentString>
+            <PersistentString
+               value = "*note">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController touchesEnded:withEvent:]:ViewController.m">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
