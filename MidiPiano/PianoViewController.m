@@ -8,10 +8,13 @@
 
 #import "PianoViewController.h"
 #import "MidiAudioManager.h"
-@interface PianoViewController()
+#import "PianoKey.h"
+@interface PianoViewController()<PianoKeyDelegate,UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)PianoKey *lastKey;
 @property(nonatomic)int velocity;
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
+@property (weak, nonatomic) IBOutlet UITableView *soundFontTableView;
+@property (nonatomic,strong) NSArray<NSURL *> *soundFontURLArray;
 @end
 
 @implementation PianoViewController
@@ -31,6 +34,8 @@
         [key setTitle:btnTitle forState:UIControlStateNormal];
         }
     }
+    
+    self.soundFontURLArray = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"sf2" subdirectory:nil];
 }
 
 /*
@@ -166,6 +171,30 @@ const char * noteForMidiNumber(int midiNumber) {
 //    }
     return note;
     
+}
+- (IBAction)switchSoundFont:(id)sender {
+    self.soundFontTableView.hidden = false;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.soundFontURLArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString * cellIdentifier  = @"SFCELL";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    cell.textLabel.text = self.soundFontURLArray[indexPath.row].lastPathComponent;
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [[MidiAudioManager sharedManager] loadFromDLSOrSoundFont:self.soundFontURLArray[indexPath.row] withPatch:0];
+    self.soundFontTableView.hidden = YES;
 }
 
 - (IBAction)adjustVelocity:(id)sender{

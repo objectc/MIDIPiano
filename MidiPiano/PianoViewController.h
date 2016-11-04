@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PianoKey.h"
-@interface PianoViewController : UIViewController<PianoKeyDelegate>
-
+@interface PianoViewController : UIViewController
 @end
 

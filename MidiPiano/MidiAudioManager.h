@@ -21,4 +21,5 @@
 
 - (void)startPlayNote:(MusicDeviceNoteParams)note;
 - (void)stopPlayNote;
+-(OSStatus) loadFromDLSOrSoundFont: (NSURL *)fileURL withPatch: (int)presetNumber;
 @end
