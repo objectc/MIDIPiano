@@ -52,7 +52,7 @@ void MyMIDIReadProc (const MIDINotification  *message, void *refCon) {
     [self configureAndStartAudioProcessingGraph:self.processingGraph];
 //    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Full Grand Piano" ofType:@"sf2"]];
     
-    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Ney Flute" ofType:@"sf2"]];
+    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Grand Piano" ofType:@"sf2"]];
         
     [self loadFromDLSOrSoundFont:soundFontFileURL withPatch:0];
     }

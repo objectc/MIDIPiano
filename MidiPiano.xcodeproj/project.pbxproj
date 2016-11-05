@@ -8,9 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		1731C0671DCAE2E40060185F /* PianoKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 1731C0661DCAE2E40060185F /* PianoKey.m */; };
-		1731C06B1DCB0E1F0060185F /* FLUTE Large.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C06A1DCB0E1F0060185F /* FLUTE Large.sf2 */; };
 		1731C06E1DCB2FE80060185F /* TunerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1731C06D1DCB2FE80060185F /* TunerViewController.m */; };
-		1731C06F1DCB317A0060185F /* Ney Flute.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0681DCB0D060060185F /* Ney Flute.sf2 */; };
+		1731C07C1DCC3B6C0060185F /* DynoPiano1.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0741DCC3B6C0060185F /* DynoPiano1.sf2 */; };
+		1731C07E1DCC3B6C0060185F /* Elec. Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0761DCC3B6C0060185F /* Elec. Piano.sf2 */; };
+		1731C07F1DCC3B6C0060185F /* Finger Bass.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0771DCC3B6C0060185F /* Finger Bass.sf2 */; };
+		1731C0821DCC3B6C0060185F /* Gitano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C07A1DCC3B6C0060185F /* Gitano.sf2 */; };
+		1731C0831DCC3B6C0060185F /* Ney Flute.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C07B1DCC3B6C0060185F /* Ney Flute.sf2 */; };
+		1731C0881DCC3C320060185F /* Grand Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0841DCC3C320060185F /* Grand Piano.sf2 */; };
+		1731C0891DCC3C320060185F /* Slack Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0851DCC3C320060185F /* Slack Piano.sf2 */; };
+		1731C08A1DCC3C320060185F /* Stereo Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0861DCC3C320060185F /* Stereo Piano.sf2 */; };
 		174105921DB7AB9A00F0B162 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 174105911DB7AB9A00F0B162 /* main.m */; };
 		174105951DB7AB9A00F0B162 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 174105941DB7AB9A00F0B162 /* AppDelegate.m */; };
 		174105981DB7AB9A00F0B162 /* PianoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 174105971DB7AB9A00F0B162 /* PianoViewController.m */; };
@@ -20,17 +26,22 @@
 		174105A91DB7ABF300F0B162 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 174105A81DB7ABF300F0B162 /* AudioToolbox.framework */; };
 		174105AB1DB7ABFD00F0B162 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 174105AA1DB7ABFD00F0B162 /* CoreAudio.framework */; };
 		17501A941DBD12B6007DF9CF /* MidiAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 17501A931DBD12B6007DF9CF /* MidiAudioManager.m */; };
-		17501A981DBD2B34007DF9CF /* Full Grand Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 17501A971DBD2B34007DF9CF /* Full Grand Piano.sf2 */; };
 		17501AA21DBD31B0007DF9CF /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17501AA11DBD31B0007DF9CF /* CoreMIDI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1731C0651DCAE2E40060185F /* PianoKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PianoKey.h; sourceTree = "<group>"; };
 		1731C0661DCAE2E40060185F /* PianoKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PianoKey.m; sourceTree = "<group>"; };
-		1731C0681DCB0D060060185F /* Ney Flute.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ney Flute.sf2"; sourceTree = "<group>"; };
-		1731C06A1DCB0E1F0060185F /* FLUTE Large.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FLUTE Large.sf2"; sourceTree = "<group>"; };
 		1731C06C1DCB2FE80060185F /* TunerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TunerViewController.h; sourceTree = "<group>"; };
 		1731C06D1DCB2FE80060185F /* TunerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TunerViewController.m; sourceTree = "<group>"; };
+		1731C0741DCC3B6C0060185F /* DynoPiano1.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = DynoPiano1.sf2; sourceTree = "<group>"; };
+		1731C0761DCC3B6C0060185F /* Elec. Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Elec. Piano.sf2"; sourceTree = "<group>"; };
+		1731C0771DCC3B6C0060185F /* Finger Bass.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Finger Bass.sf2"; sourceTree = "<group>"; };
+		1731C07A1DCC3B6C0060185F /* Gitano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Gitano.sf2; sourceTree = "<group>"; };
+		1731C07B1DCC3B6C0060185F /* Ney Flute.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ney Flute.sf2"; sourceTree = "<group>"; };
+		1731C0841DCC3C320060185F /* Grand Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Grand Piano.sf2"; sourceTree = "<group>"; };
+		1731C0851DCC3C320060185F /* Slack Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Slack Piano.sf2"; sourceTree = "<group>"; };
+		1731C0861DCC3C320060185F /* Stereo Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Stereo Piano.sf2"; sourceTree = "<group>"; };
 		1741058D1DB7AB9A00F0B162 /* MidiPiano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MidiPiano.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		174105911DB7AB9A00F0B162 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		174105931DB7AB9A00F0B162 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -45,7 +56,6 @@
 		174105AA1DB7ABFD00F0B162 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		17501A921DBD12B6007DF9CF /* MidiAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidiAudioManager.h; sourceTree = "<group>"; };
 		17501A931DBD12B6007DF9CF /* MidiAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MidiAudioManager.m; sourceTree = "<group>"; };
-		17501A971DBD2B34007DF9CF /* Full Grand Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Full Grand Piano.sf2"; sourceTree = "<group>"; };
 		17501AA11DBD31B0007DF9CF /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -72,6 +82,21 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		1731C0731DCC3B6C0060185F /* SF */ = {
+			isa = PBXGroup;
+			children = (
+				1731C0741DCC3B6C0060185F /* DynoPiano1.sf2 */,
+				1731C0841DCC3C320060185F /* Grand Piano.sf2 */,
+				1731C0851DCC3C320060185F /* Slack Piano.sf2 */,
+				1731C0861DCC3C320060185F /* Stereo Piano.sf2 */,
+				1731C0761DCC3B6C0060185F /* Elec. Piano.sf2 */,
+				1731C0771DCC3B6C0060185F /* Finger Bass.sf2 */,
+				1731C07A1DCC3B6C0060185F /* Gitano.sf2 */,
+				1731C07B1DCC3B6C0060185F /* Ney Flute.sf2 */,
+			);
+			path = SF;
+			sourceTree = "<group>";
+		};
 		174105841DB7AB9A00F0B162 = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +117,7 @@
 		1741058F1DB7AB9A00F0B162 /* MidiPiano */ = {
 			isa = PBXGroup;
 			children = (
+				1731C0731DCC3B6C0060185F /* SF */,
 				1731C0641DCAE2C00060185F /* UI */,
 				174105931DB7AB9A00F0B162 /* AppDelegate.h */,
 				174105941DB7AB9A00F0B162 /* AppDelegate.m */,
@@ -101,9 +127,6 @@
 				1731C06D1DCB2FE80060185F /* TunerViewController.m */,
 				17501A921DBD12B6007DF9CF /* MidiAudioManager.h */,
 				17501A931DBD12B6007DF9CF /* MidiAudioManager.m */,
-				1731C06A1DCB0E1F0060185F /* FLUTE Large.sf2 */,
-				1731C0681DCB0D060060185F /* Ney Flute.sf2 */,
-				17501A971DBD2B34007DF9CF /* Full Grand Piano.sf2 */,
 				174105991DB7AB9A00F0B162 /* Main.storyboard */,
 				1741059C1DB7AB9A00F0B162 /* Assets.xcassets */,
 				1741059E1DB7AB9A00F0B162 /* LaunchScreen.storyboard */,
@@ -194,12 +217,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17501A981DBD2B34007DF9CF /* Full Grand Piano.sf2 in Resources */,
+				1731C08A1DCC3C320060185F /* Stereo Piano.sf2 in Resources */,
+				1731C0831DCC3B6C0060185F /* Ney Flute.sf2 in Resources */,
 				174105A01DB7AB9A00F0B162 /* LaunchScreen.storyboard in Resources */,
+				1731C07C1DCC3B6C0060185F /* DynoPiano1.sf2 in Resources */,
+				1731C07E1DCC3B6C0060185F /* Elec. Piano.sf2 in Resources */,
+				1731C0821DCC3B6C0060185F /* Gitano.sf2 in Resources */,
 				1741059D1DB7AB9A00F0B162 /* Assets.xcassets in Resources */,
-				1731C06F1DCB317A0060185F /* Ney Flute.sf2 in Resources */,
-				1731C06B1DCB0E1F0060185F /* FLUTE Large.sf2 in Resources */,
+				1731C0881DCC3C320060185F /* Grand Piano.sf2 in Resources */,
+				1731C07F1DCC3B6C0060185F /* Finger Bass.sf2 in Resources */,
 				1741059B1DB7AB9A00F0B162 /* Main.storyboard in Resources */,
+				1731C0891DCC3C320060185F /* Slack Piano.sf2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
