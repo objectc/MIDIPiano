@@ -27,6 +27,10 @@
 		174105AB1DB7ABFD00F0B162 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 174105AA1DB7ABFD00F0B162 /* CoreAudio.framework */; };
 		17501A941DBD12B6007DF9CF /* MidiAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 17501A931DBD12B6007DF9CF /* MidiAudioManager.m */; };
 		17501AA21DBD31B0007DF9CF /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17501AA11DBD31B0007DF9CF /* CoreMIDI.framework */; };
+		177650691DD4CF250002F3F0 /* AudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 177650681DD4CF250002F3F0 /* AudioEngine.m */; };
+		177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */ = {isa = PBXBuildFile; fileRef = 1776506F1DD56F120002F3F0 /* EZAudioFFT.m */; };
+		177650731DD56F120002F3F0 /* EZAudioUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 177650711DD56F120002F3F0 /* EZAudioUtilities.m */; };
+		177650761DD578F20002F3F0 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 177650741DD578F20002F3F0 /* TPCircularBuffer.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +61,14 @@
 		17501A921DBD12B6007DF9CF /* MidiAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidiAudioManager.h; sourceTree = "<group>"; };
 		17501A931DBD12B6007DF9CF /* MidiAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MidiAudioManager.m; sourceTree = "<group>"; };
 		17501AA11DBD31B0007DF9CF /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		177650671DD4CF250002F3F0 /* AudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEngine.h; sourceTree = "<group>"; };
+		177650681DD4CF250002F3F0 /* AudioEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEngine.m; sourceTree = "<group>"; };
+		1776506E1DD56F120002F3F0 /* EZAudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioFFT.h; sourceTree = "<group>"; };
+		1776506F1DD56F120002F3F0 /* EZAudioFFT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioFFT.m; sourceTree = "<group>"; };
+		177650701DD56F120002F3F0 /* EZAudioUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioUtilities.h; sourceTree = "<group>"; };
+		177650711DD56F120002F3F0 /* EZAudioUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioUtilities.m; sourceTree = "<group>"; };
+		177650741DD578F20002F3F0 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
+		177650751DD578F20002F3F0 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +129,7 @@
 		1741058F1DB7AB9A00F0B162 /* MidiPiano */ = {
 			isa = PBXGroup;
 			children = (
+				1776506D1DD56F120002F3F0 /* 3rd Party */,
 				1731C0731DCC3B6C0060185F /* SF */,
 				1731C0641DCAE2C00060185F /* UI */,
 				174105931DB7AB9A00F0B162 /* AppDelegate.h */,
@@ -125,6 +138,8 @@
 				174105971DB7AB9A00F0B162 /* PianoViewController.m */,
 				1731C06C1DCB2FE80060185F /* TunerViewController.h */,
 				1731C06D1DCB2FE80060185F /* TunerViewController.m */,
+				177650671DD4CF250002F3F0 /* AudioEngine.h */,
+				177650681DD4CF250002F3F0 /* AudioEngine.m */,
 				17501A921DBD12B6007DF9CF /* MidiAudioManager.h */,
 				17501A931DBD12B6007DF9CF /* MidiAudioManager.m */,
 				174105991DB7AB9A00F0B162 /* Main.storyboard */,
@@ -152,6 +167,19 @@
 				174105A81DB7ABF300F0B162 /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1776506D1DD56F120002F3F0 /* 3rd Party */ = {
+			isa = PBXGroup;
+			children = (
+				1776506E1DD56F120002F3F0 /* EZAudioFFT.h */,
+				1776506F1DD56F120002F3F0 /* EZAudioFFT.m */,
+				177650741DD578F20002F3F0 /* TPCircularBuffer.c */,
+				177650751DD578F20002F3F0 /* TPCircularBuffer.h */,
+				177650701DD56F120002F3F0 /* EZAudioUtilities.h */,
+				177650711DD56F120002F3F0 /* EZAudioUtilities.m */,
+			);
+			path = "3rd Party";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,6 +213,7 @@
 				TargetAttributes = {
 					1741058C1DB7AB9A00F0B162 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = BGR4ZK9GEQ;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -238,12 +267,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */,
 				174105981DB7AB9A00F0B162 /* PianoViewController.m in Sources */,
 				1731C06E1DCB2FE80060185F /* TunerViewController.m in Sources */,
 				17501A941DBD12B6007DF9CF /* MidiAudioManager.m in Sources */,
+				177650731DD56F120002F3F0 /* EZAudioUtilities.m in Sources */,
 				174105951DB7AB9A00F0B162 /* AppDelegate.m in Sources */,
 				1731C0671DCAE2E40060185F /* PianoKey.m in Sources */,
 				174105921DB7AB9A00F0B162 /* main.m in Sources */,
+				177650761DD578F20002F3F0 /* TPCircularBuffer.c in Sources */,
+				177650691DD4CF250002F3F0 /* AudioEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +396,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = BGR4ZK9GEQ;
 				INFOPLIST_FILE = MidiPiano/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.120id.MidiPiano;
@@ -374,6 +408,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = BGR4ZK9GEQ;
 				INFOPLIST_FILE = MidiPiano/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.120id.MidiPiano;

@@ -6,6 +6,14 @@
          contextName = "-[ViewController getNoteByPianoKey:]:ViewController.m">
       </ContextState>
       <ContextState
+         contextName = "-[AudioEngine startRecording]:AudioEngine.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.engine.mainMixerNode.outputVolume">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ViewController touchesBegan:withEvent:]:ViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -21,6 +29,14 @@
             </PersistentString>
             <PersistentString
                value = "*note">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TunerViewController returnMaxFrequency:]:TunerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.inputFrequencyLabel.text">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

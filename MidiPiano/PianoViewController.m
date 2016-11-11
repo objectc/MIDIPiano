@@ -195,6 +195,7 @@ const char * noteForMidiNumber(int midiNumber) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [[MidiAudioManager sharedManager] loadFromDLSOrSoundFont:self.soundFontURLArray[indexPath.row] withPatch:0];
     self.soundFontTableView.hidden = YES;
+
 }
 
 - (IBAction)adjustVelocity:(id)sender{
