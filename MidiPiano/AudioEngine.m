@@ -80,8 +80,10 @@ static float unitVelocity;
 - (void)stopGenerateTone{
     if (_isGeneratingTone) {
         [self.toneGeneratorNode stop];
+        [self.engine stop];
         [self.engine disconnectNodeInput:self.toneGeneratorNode];
         _isGeneratingTone = NO;
+        
     }
 }
 
@@ -100,8 +102,9 @@ static float unitVelocity;
 
 - (void)stopRecording{
     if (_isRecording) {
-        [self.engine.mainMixerNode removeTapOnBus:0];
+        [self.engine.inputNode removeTapOnBus:0];
         [self.engine disconnectNodeInput:self.engine.inputNode];
+        [self.engine stop];
         _isRecording = NO;
     }
 }
