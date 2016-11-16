@@ -23,11 +23,14 @@
 @interface AudioEngine : NSObject
 
 @property(nonatomic,weak) id<ToneGeneratorDelegate,FFTDelegate>delegate;
-
++(id)sharedEngine;
 - (void)refreshToneFrequency;
 - (void)startGenerateTone;
 - (void)stopGenerateTone;
 - (void)startRecording;
 - (void)stopRecording;
+
+- (void)playOrStopAudioPlayerByURL:(NSURL *)audioEffectFileURL;
+- (void)adjustAudioPlayerVolume:(float)volume byURL:(NSURL *)audioEffectFileURL;
 
 @end

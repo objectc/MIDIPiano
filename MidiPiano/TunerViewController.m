@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.audioEngine = [[AudioEngine alloc] init];
+    self.audioEngine = [AudioEngine sharedEngine];
     self.audioEngine.delegate = self;
     // Do any additional setup after loading the view.
 }

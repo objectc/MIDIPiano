@@ -26,7 +26,7 @@
             </objects>
             <point key="canvasLocation" x="-856" y="250"/>
         </scene>
-        <!--Piano View Controller-->
+        <!--Delegate-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="PianoViewController" sceneMemberID="viewController">
@@ -477,18 +477,66 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="NFV-oa-9PL"/>
                                 </connections>
                             </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xvl-Gt-vkp">
+                                <rect key="frame" x="199" y="39" width="459" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="playback" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AudioEffectCell" rowHeight="44" id="EVc-iW-npb" customClass="AudioEffectTableViewCell">
+                                        <rect key="frame" x="0.0" y="28" width="459" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EVc-iW-npb" id="eAg-Oz-Eb6">
+                                            <rect key="frame" x="0.0" y="0.0" width="459" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="08b-vp-cnn">
+                                                    <rect key="frame" x="131" y="6" width="283" height="31"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="volumeChanged:" destination="EVc-iW-npb" eventType="valueChanged" id="Ikp-d5-VL1"/>
+                                                    </connections>
+                                                </slider>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="Yck-qC-mH1">
+                                                    <rect key="frame" x="8" y="11" width="117" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="hb0-aC-FcU"/>
+                                            <outlet property="titleLabel" destination="Yck-qC-mH1" id="MOz-aS-VER"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="7zi-Mz-NAj"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="GOz-k2-X5D"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aBj-Zf-5QJ">
+                                <rect key="frame" x="477" y="9" width="74" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="音乐合成"/>
+                                <connections>
+                                    <action selector="toggleAudioEffectAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ATx-vC-gjZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="bY5-PR-I0X"/>
                     <connections>
+                        <outlet property="audioEffectTableView" destination="xvl-Gt-vkp" id="9bW-nS-iYX"/>
                         <outlet property="soundFontTableView" destination="Jbd-jv-Qzh" id="3QH-zh-V7K"/>
                         <outlet property="velocityLabel" destination="wdN-Tw-re8" id="Han-fW-yBm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-331.48425787106447" y="-223.19999999999999"/>
+            <point key="canvasLocation" x="-344.07796101949026" y="-220"/>
         </scene>
         <!--Tuner View Controller-->
         <scene sceneID="Zgs-HK-0d0">

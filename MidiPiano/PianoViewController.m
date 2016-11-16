@@ -9,18 +9,27 @@
 #import "PianoViewController.h"
 #import "MidiAudioManager.h"
 #import "PianoKey.h"
-@interface PianoViewController()<PianoKeyDelegate,UITableViewDelegate,UITableViewDataSource>
+#import "AudioEffectTableViewCell.h"
+#import "AudioEngine.h"
+
+@interface PianoViewController()<PianoKeyDelegate,AudioEffectTableViewCellDelegate,UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)PianoKey *lastKey;
 @property(nonatomic)int velocity;
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
 @property (weak, nonatomic) IBOutlet UITableView *soundFontTableView;
+@property (weak, nonatomic) IBOutlet UITableView *audioEffectTableView;
 @property (nonatomic,strong) NSArray<NSURL *> *soundFontURLArray;
+@property (nonatomic,strong) NSArray<NSURL *> *audioEffectURLArray;
+@property (nonatomic,strong) NSMutableDictionary<NSIndexPath*,NSNumber *> *audioEffectTableViewData;
 @end
+
+static NSString *AudioEffectCellID = @"AudioEffectCell";
 
 @implementation PianoViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initPiano];
+    [self initAudioEffectModule];
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (void)initPiano{
@@ -36,6 +45,12 @@
     }
     
     self.soundFontURLArray = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"sf2" subdirectory:nil];
+}
+
+- (void)initAudioEffectModule{
+    self.audioEffectURLArray = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"m4a" subdirectory:nil];
+    self.audioEffectTableViewData = [[NSMutableDictionary alloc] init];
+//    [self.audioEffectTableView registerClass:[AudioEffectTableViewCell class] forCellReuseIdentifier:AudioEffectCellID];
 }
 
 /*
@@ -172,31 +187,63 @@ const char * noteForMidiNumber(int midiNumber) {
     return note;
     
 }
+
+#pragma mark Sound Font
 - (IBAction)switchSoundFont:(id)sender {
     self.soundFontTableView.hidden = false;
 }
 
 
+
+#pragma mark Mix AudioEffect
+- (IBAction)toggleAudioEffectAction:(id)sender {
+    self.audioEffectTableView.hidden = false;
+}
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.soundFontURLArray.count;
+    if (tableView == self.soundFontTableView) {
+        return self.soundFontURLArray.count;
+    }else if(tableView == self.audioEffectTableView){
+        return self.audioEffectURLArray.count;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString * cellIdentifier  = @"SFCELL";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    UITableViewCell *cell;
+    if (tableView == self.soundFontTableView) {
+        static NSString * cellIdentifier  = @"SFCELL";
+         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+        cell.textLabel.text = self.soundFontURLArray[indexPath.row].lastPathComponent;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    }else if (tableView == self.audioEffectTableView){
+        cell = [self.audioEffectTableView dequeueReusableCellWithIdentifier:AudioEffectCellID forIndexPath:indexPath];
+//        ((AudioEffectTableViewCell *)cell).delegate = self;
+        ((AudioEffectTableViewCell *)cell).titleLabel.text = [self.audioEffectURLArray[indexPath.row].lastPathComponent stringByDeletingPathExtension];
+//        cell.textLabel.text = AudioEffectCellID;
     }
-    cell.textLabel.text = self.soundFontURLArray[indexPath.row].lastPathComponent;
-    cell.textLabel.adjustsFontSizeToFitWidth = YES;
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [[MidiAudioManager sharedManager] loadFromDLSOrSoundFont:self.soundFontURLArray[indexPath.row] withPatch:0];
-    self.soundFontTableView.hidden = YES;
-
+    if (tableView == self.soundFontTableView) {
+        [[MidiAudioManager sharedManager] loadFromDLSOrSoundFont:self.soundFontURLArray[indexPath.row] withPatch:0];
+        self.soundFontTableView.hidden = YES;
+    }else if (tableView == self.audioEffectTableView){
+        BOOL isPlaying = [self.audioEffectTableViewData[indexPath] boolValue];
+        self.audioEffectTableViewData[indexPath] = [NSNumber numberWithBool:!isPlaying];
+        AudioEffectTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [cell setIsPlaying:!isPlaying];
+        [[AudioEngine sharedEngine] playOrStopAudioPlayerByURL:self.audioEffectURLArray[indexPath.row]];
+    }
 }
+
+
+#pragma mark Velocity
 
 - (IBAction)adjustVelocity:(id)sender{
     UIButton *btn = (UIButton *)sender;
@@ -206,6 +253,14 @@ const char * noteForMidiNumber(int midiNumber) {
         self.velocity +=10;
     self.velocityLabel.text = [NSString stringWithFormat:@"%d",self.velocity];
 }
+
+#pragma AudioEffectTableViewCell delegate
+
+- (void)cell:(UITableViewCell *)cell volumeChangeToValue:(float)value{
+    NSIndexPath *indexPath = [self.audioEffectTableView indexPathForCell:cell];
+    [[AudioEngine sharedEngine] adjustAudioPlayerVolume:value byURL:self.audioEffectURLArray[indexPath.row]];
+}
+
 
 - (void)pianoKey:(PianoKey *)pianoKey touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
 }

@@ -25,6 +25,8 @@
 @property (nonatomic,strong) AVAudioFormat *audioFormat;
 @property (nonatomic,assign) float currentFrequency;
 @property (nonatomic,strong) EZAudioFFTRolling *fft;
+@property (nonatomic,strong) NSMutableDictionary<NSURL*,AVAudioPlayerNode*> *audioEffectPlayerDict;
+@property (nonatomic,strong) NSMutableDictionary<NSURL*,AVAudioPlayerNode*> *audioEffectPlayerReuseDict;
 
 @end
 
@@ -32,6 +34,17 @@ static vDSP_Length const FFTViewControllerFFTWindowSize = 4096;
 static AVAudioFrameCount kSamplesPerBuffer = 44100;
 static float unitVelocity;
 @implementation AudioEngine
+static AudioEngine *sharedEngine = nil;
+
++ (AudioEngine *)sharedEngine
+{
+    @synchronized(self){
+        if (nil == sharedEngine) {
+            sharedEngine = [[AudioEngine alloc] init];
+        }
+    }
+    return sharedEngine;
+}
 - (instancetype)init{
     if (self = [super init]) {
         [self initAVAudioSession];
@@ -50,6 +63,8 @@ static float unitVelocity;
     }
     return self;
 }
+
+#pragma mark- for tuner
 
 - (void)attachAndConnectNode{
     [self.engine attachNode:self.toneGeneratorNode];
@@ -109,6 +124,87 @@ static float unitVelocity;
     }
 }
 
+- (void)refreshToneFrequency{
+    float newFrequency;
+    if (_delegate && [_delegate respondsToSelector:@selector(requestForToneFrequency)]) {
+        newFrequency = [_delegate requestForToneFrequency];
+    }
+    if (newFrequency!=_currentFrequency) {
+        _currentFrequency = newFrequency;
+        
+        float sampleTime = 0;
+        for (int sampleIndex = 0; sampleIndex < kSamplesPerBuffer; sampleIndex++){
+            float modulatorAmplitude = 1;
+            float modulatorVelocity = _currentFrequency *unitVelocity;
+            double sample =  sin(modulatorVelocity * sampleTime);
+            float * leftChannel =  self.audioBuffer.floatChannelData[0];
+            float * rightChannel =  self.audioBuffer.floatChannelData[1];
+            leftChannel[sampleIndex] = sample;
+            rightChannel[sampleIndex] = sample;
+            sampleTime++;
+        }
+        self.audioBuffer.frameLength = kSamplesPerBuffer;
+    }
+}
+
+#pragma mark for audio mix
+
+- (NSMutableDictionary *)audioEffectPlayerDict{
+    if (_audioEffectPlayerDict == NULL) {
+        _audioEffectPlayerDict = [[NSMutableDictionary alloc] init];
+    }
+    return _audioEffectPlayerDict;
+}
+
+- (NSMutableDictionary *)audioEffectPlayerReuseDict{
+    if (_audioEffectPlayerReuseDict == NULL) {
+        _audioEffectPlayerReuseDict = [[NSMutableDictionary alloc] init];
+    }
+    return _audioEffectPlayerReuseDict;
+}
+
+- (void)playOrStopAudioPlayerByURL:(NSURL *)audioEffectFileURL{
+    AVAudioPlayerNode *playerNode = self.audioEffectPlayerDict[audioEffectFileURL];
+    if (playerNode) {
+        if (playerNode.isPlaying) {
+            [playerNode pause];
+        }else
+            [playerNode play];
+        
+    }else
+        [self addAudioEffectPlayerByURL:audioEffectFileURL];
+
+}
+
+- (void)removeAudioEffectPlayerByURL:(NSURL *)audioEffectFileURL{
+    AVAudioPlayerNode *playerNode = self.audioEffectPlayerDict[audioEffectFileURL];
+    [playerNode stop];
+//    [self.engine disconnectNodeInput:playerNode];
+//    [self.engine detachNode:playerNode ];
+//    self.audioEffectPlayerReuseDict[audioEffectFileURL] = playerNode;
+//    [self.audioEffectPlayerDict removeObjectForKey:audioEffectFileURL];
+}
+int playerCount = 0;
+-(void)addAudioEffectPlayerByURL:(NSURL *)audioEffectFileURL{
+    NSError *error;
+    AVAudioPlayerNode *playerNode = [[AVAudioPlayerNode alloc] init];
+    playerNode.volume = 0.5;
+    AVAudioFile *audioEffectFile = [[AVAudioFile alloc] initForReading:audioEffectFileURL error:&error];
+    AVAudioPCMBuffer *fileBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:[audioEffectFile processingFormat] frameCapacity:(AVAudioFrameCount)[audioEffectFile length]];
+    NSAssert([audioEffectFile readIntoBuffer:fileBuffer error:&error], @"PCMBuffer read error %@ into buffer, %@",[audioEffectFileURL description], [error localizedDescription]);
+    self.audioEffectPlayerDict[audioEffectFileURL] = playerNode;
+    [self.engine attachNode:playerNode];
+    [self.engine connect:playerNode to:self.engine.mainMixerNode fromBus:0 toBus:playerCount++ format:fileBuffer.format];
+    [playerNode scheduleBuffer:fileBuffer atTime:nil options:AVAudioPlayerNodeBufferLoops completionHandler:nil];
+    [self startEngine];
+    [playerNode play];
+}
+
+-(void)adjustAudioPlayerVolume:(float)volume byURL:(NSURL *)audioEffectFileURL{
+    AVAudioPlayerNode *playerNode = self.audioEffectPlayerDict[audioEffectFileURL];
+    playerNode.volume = volume;
+}
+
 #pragma mark AVAudioSession
 
 - (void)initAVAudioSession
@@ -153,29 +249,6 @@ static float unitVelocity;
     NSLog(@"Session interrupted > --- %s ---\n", theInterruptionType == AVAudioSessionInterruptionTypeBegan ? "Begin Interruption" : "End Interruption");
 }
 
-
-- (void)refreshToneFrequency{
-    float newFrequency;
-    if (_delegate && [_delegate respondsToSelector:@selector(requestForToneFrequency)]) {
-        newFrequency = [_delegate requestForToneFrequency];
-    }
-    if (newFrequency!=_currentFrequency) {
-        _currentFrequency = newFrequency;
-        
-        float sampleTime = 0;
-        for (int sampleIndex = 0; sampleIndex < kSamplesPerBuffer; sampleIndex++){
-            float modulatorAmplitude = 1;
-            float modulatorVelocity = _currentFrequency *unitVelocity;
-            double sample =  sin(modulatorVelocity * sampleTime);
-            float * leftChannel =  self.audioBuffer.floatChannelData[0];
-            float * rightChannel =  self.audioBuffer.floatChannelData[1];
-            leftChannel[sampleIndex] = sample;
-            rightChannel[sampleIndex] = sample;
-            sampleTime++;
-        }
-        self.audioBuffer.frameLength = kSamplesPerBuffer;
-    }
-}
 
 #pragma FFT delegate -mark
 - (void)fft:(EZAudioFFT *)fft updatedWithFFTData:(float *)fftData bufferSize:(vDSP_Length)bufferSize{

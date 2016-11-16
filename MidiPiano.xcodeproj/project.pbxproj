@@ -31,6 +31,11 @@
 		177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */ = {isa = PBXBuildFile; fileRef = 1776506F1DD56F120002F3F0 /* EZAudioFFT.m */; };
 		177650731DD56F120002F3F0 /* EZAudioUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 177650711DD56F120002F3F0 /* EZAudioUtilities.m */; };
 		177650761DD578F20002F3F0 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 177650741DD578F20002F3F0 /* TPCircularBuffer.c */; };
+		1794E9A61DDC15F50048F781 /* amen.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1794E9A21DDC15F50048F781 /* amen.m4a */; };
+		1794E9A71DDC15F50048F781 /* bass.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1794E9A31DDC15F50048F781 /* bass.m4a */; };
+		1794E9A81DDC15F50048F781 /* piano.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1794E9A41DDC15F50048F781 /* piano.m4a */; };
+		1794E9A91DDC15F50048F781 /* sweep.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1794E9A51DDC15F50048F781 /* sweep.m4a */; };
+		1794E9AC1DDC9E310048F781 /* AudioEffectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1794E9AB1DDC9E310048F781 /* AudioEffectTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +74,12 @@
 		177650711DD56F120002F3F0 /* EZAudioUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioUtilities.m; sourceTree = "<group>"; };
 		177650741DD578F20002F3F0 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
 		177650751DD578F20002F3F0 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
+		1794E9A21DDC15F50048F781 /* amen.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = amen.m4a; sourceTree = "<group>"; };
+		1794E9A31DDC15F50048F781 /* bass.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = bass.m4a; sourceTree = "<group>"; };
+		1794E9A41DDC15F50048F781 /* piano.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = piano.m4a; sourceTree = "<group>"; };
+		1794E9A51DDC15F50048F781 /* sweep.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sweep.m4a; sourceTree = "<group>"; };
+		1794E9AA1DDC9E310048F781 /* AudioEffectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEffectTableViewCell.h; sourceTree = "<group>"; };
+		1794E9AB1DDC9E310048F781 /* AudioEffectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEffectTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +101,8 @@
 			children = (
 				1731C0651DCAE2E40060185F /* PianoKey.h */,
 				1731C0661DCAE2E40060185F /* PianoKey.m */,
+				1794E9AA1DDC9E310048F781 /* AudioEffectTableViewCell.h */,
+				1794E9AB1DDC9E310048F781 /* AudioEffectTableViewCell.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -129,6 +142,7 @@
 		1741058F1DB7AB9A00F0B162 /* MidiPiano */ = {
 			isa = PBXGroup;
 			children = (
+				1794E9A11DDC15F50048F781 /* AudioEffect */,
 				1776506D1DD56F120002F3F0 /* 3rd Party */,
 				1731C0731DCC3B6C0060185F /* SF */,
 				1731C0641DCAE2C00060185F /* UI */,
@@ -180,6 +194,17 @@
 				177650711DD56F120002F3F0 /* EZAudioUtilities.m */,
 			);
 			path = "3rd Party";
+			sourceTree = "<group>";
+		};
+		1794E9A11DDC15F50048F781 /* AudioEffect */ = {
+			isa = PBXGroup;
+			children = (
+				1794E9A21DDC15F50048F781 /* amen.m4a */,
+				1794E9A31DDC15F50048F781 /* bass.m4a */,
+				1794E9A41DDC15F50048F781 /* piano.m4a */,
+				1794E9A51DDC15F50048F781 /* sweep.m4a */,
+			);
+			path = AudioEffect;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,15 +272,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				1731C08A1DCC3C320060185F /* Stereo Piano.sf2 in Resources */,
+				1794E9A61DDC15F50048F781 /* amen.m4a in Resources */,
 				1731C0831DCC3B6C0060185F /* Ney Flute.sf2 in Resources */,
 				174105A01DB7AB9A00F0B162 /* LaunchScreen.storyboard in Resources */,
 				1731C07C1DCC3B6C0060185F /* DynoPiano1.sf2 in Resources */,
 				1731C07E1DCC3B6C0060185F /* Elec. Piano.sf2 in Resources */,
 				1731C0821DCC3B6C0060185F /* Gitano.sf2 in Resources */,
+				1794E9A71DDC15F50048F781 /* bass.m4a in Resources */,
 				1741059D1DB7AB9A00F0B162 /* Assets.xcassets in Resources */,
 				1731C0881DCC3C320060185F /* Grand Piano.sf2 in Resources */,
 				1731C07F1DCC3B6C0060185F /* Finger Bass.sf2 in Resources */,
 				1741059B1DB7AB9A00F0B162 /* Main.storyboard in Resources */,
+				1794E9A81DDC15F50048F781 /* piano.m4a in Resources */,
+				1794E9A91DDC15F50048F781 /* sweep.m4a in Resources */,
 				1731C0891DCC3C320060185F /* Slack Piano.sf2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +298,7 @@
 			files = (
 				177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */,
 				174105981DB7AB9A00F0B162 /* PianoViewController.m in Sources */,
+				1794E9AC1DDC9E310048F781 /* AudioEffectTableViewCell.m in Sources */,
 				1731C06E1DCB2FE80060185F /* TunerViewController.m in Sources */,
 				17501A941DBD12B6007DF9CF /* MidiAudioManager.m in Sources */,
 				177650731DD56F120002F3F0 /* EZAudioUtilities.m in Sources */,
