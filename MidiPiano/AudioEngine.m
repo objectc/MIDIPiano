@@ -111,8 +111,8 @@ static AudioEngine *sharedEngine = nil;
 - (void)startRecording{
     if (!_isRecording) {
         [self.engine connect:self.engine.inputNode to:self.engine.mainMixerNode fromBus:0 toBus:2 format:self.audioFormat];
-        [self.engine.inputNode installTapOnBus:0 bufferSize:128 format:self.audioFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
-            [self.fft computeFFTWithBuffer:buffer.floatChannelData[0] withBufferSize:128];
+        [self.engine.inputNode installTapOnBus:0 bufferSize:4096 format:self.audioFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
+            [self.fft computeFFTWithBuffer:buffer.floatChannelData[0] withBufferSize:4096];
             
         }];
         self.engine.mainMixerNode.outputVolume = 0;
