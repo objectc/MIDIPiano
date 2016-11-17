@@ -24,6 +24,9 @@
 
 @property(nonatomic,weak) id<ToneGeneratorDelegate,FFTDelegate>delegate;
 +(id)sharedEngine;
+
+- (void)stopEngine;
+
 - (void)refreshToneFrequency;
 - (void)startGenerateTone;
 - (void)stopGenerateTone;

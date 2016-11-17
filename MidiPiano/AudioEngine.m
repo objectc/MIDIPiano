@@ -79,6 +79,12 @@ static AudioEngine *sharedEngine = nil;
     }
 }
 
+- (void)stopEngine{
+    if (self.engine.isRunning) {
+        [_engine stop];
+    }
+}
+
 - (void)startGenerateTone{
     if (!_isGeneratingTone) {
         [self refreshToneFrequency];

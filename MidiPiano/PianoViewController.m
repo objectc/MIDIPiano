@@ -32,6 +32,9 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
     [self initAudioEffectModule];
     // Do any additional setup after loading the view, typically from a nib.
 }
+- (void)viewDidDisappear:(BOOL)animated{
+    [[AudioEngine sharedEngine] stopEngine];
+}
 - (void)initPiano{
     self.velocity = 50;
     self.velocityLabel.text = [NSString stringWithFormat:@"%d",self.velocity];
@@ -197,7 +200,7 @@ const char * noteForMidiNumber(int midiNumber) {
 
 #pragma mark Mix AudioEffect
 - (IBAction)toggleAudioEffectAction:(id)sender {
-    self.audioEffectTableView.hidden = false;
+    self.audioEffectTableView.hidden = !self.audioEffectTableView.hidden;
 }
 
 
