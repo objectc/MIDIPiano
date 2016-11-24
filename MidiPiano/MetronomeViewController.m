@@ -53,7 +53,10 @@
 }
 
 - (IBAction)startOrStop:(id)sender {
-    [[AudioEngine sharedEngine] startMetronome];
+    if ([AudioEngine sharedEngine].isMetronomeRunning) {
+        [[AudioEngine sharedEngine] stopMetronome];
+    }else
+        [[AudioEngine sharedEngine] startMetronome];
 }
 - (IBAction)tempoBPMChnagedAction:(id)sender {
     [AudioEngine sharedEngine].tempoBPM = self.tempoBPMSlider.value;
