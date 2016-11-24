@@ -27,18 +27,30 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = YES;
+    [self.audioEngine stopTuning];
+    [self.audioEngine stopGenerateTone];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)playAudioBtnAction:(id)sender {
     self.inputFrequencyLabel.text = @"";
-    [self.audioEngine stopRecording];
+    [self.audioEngine stopTuning];
     [self.audioEngine startGenerateTone];
 }
 - (IBAction)inputBtnAction:(id)sender {
     [self.audioEngine stopGenerateTone];
-    [self.audioEngine startRecording];
+    [self.audioEngine startTuning];
 }
 - (IBAction)playerFrequencyChangedAction:(id)sender {
     UISlider *slider = (UISlider *)sender;

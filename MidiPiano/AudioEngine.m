@@ -15,18 +15,26 @@
 @interface AudioEngine ()<EZAudioFFTDelegate>
 
 {
-    bool _isRecording;
-    bool _isGeneratingTone;
+    BOOL _isTuning;
+    BOOL _isGeneratingTone;
+    BOOL _isMetronomeValueChanged;
+    BOOL _isNeedToStopMetronome;
+    int  _metronomeCount;
+    AVAudioFile *_currentMetronomeFile;
 }
 
 @property (nonatomic,strong) AVAudioEngine *engine;
-@property (nonatomic,strong) AVAudioPlayerNode *toneGeneratorNode;
+//调音器
+@property (nonatomic,strong) AVAudioPlayerNode *playerNode;
 @property (nonatomic,strong) AVAudioPCMBuffer *audioBuffer;
 @property (nonatomic,strong) AVAudioFormat *audioFormat;
 @property (nonatomic,assign) float currentFrequency;
 @property (nonatomic,strong) EZAudioFFTRolling *fft;
 @property (nonatomic,strong) NSMutableDictionary<NSURL*,AVAudioPlayerNode*> *audioEffectPlayerDict;
 @property (nonatomic,strong) NSMutableDictionary<NSURL*,AVAudioPlayerNode*> *audioEffectPlayerReuseDict;
+
+//节拍器
+@property (nonatomic,strong) AVAudioUnitSampler *metronomeNode;
 
 @end
 
@@ -49,27 +57,27 @@ static AudioEngine *sharedEngine = nil;
     if (self = [super init]) {
         [self initAVAudioSession];
         self.engine = [[AVAudioEngine alloc] init];
-        self.toneGeneratorNode = [[AVAudioPlayerNode alloc] init];
+        self.playerNode = [[AVAudioPlayerNode alloc] init];
         self.audioFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100 channels:2];
         self.audioBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:self.audioFormat frameCapacity:kSamplesPerBuffer];
         unitVelocity = 2.0 * M_PI / self.audioFormat.sampleRate;
 //        self.currentFrequency = 440.0;
 //        [self refreshToneFrequency];
-        self.fft = [EZAudioFFTRolling fftWithWindowSize:FFTViewControllerFFTWindowSize sampleRate:44100 delegate:self];
         
-        [self attachAndConnectNode];
+//        [self attachAndConnectNode];
+        [self.engine attachNode:self.playerNode];
+        [self.engine connect:self.playerNode to:self.engine.mainMixerNode fromBus:0 toBus:2 format:self.audioFormat];
         _isGeneratingTone = NO;
-        _isRecording = NO;
+        _isTuning = NO;
+        _isMetronomeValueChanged = NO;
+        self.tempoBPM = 100;
+        self.beatToTheBar = 1;
+        self.noteValue = 4;
     }
     return self;
 }
 
-#pragma mark- for tuner
-
-- (void)attachAndConnectNode{
-    [self.engine attachNode:self.toneGeneratorNode];
-}
-
+#pragma mark AudioEngine
 - (void)startEngine{
     if (!self.engine.isRunning) {
         NSError *error;
@@ -85,37 +93,106 @@ static AudioEngine *sharedEngine = nil;
     }
 }
 
-- (void)startGenerateTone{
-    if (!_isGeneratingTone) {
-        [self refreshToneFrequency];
-//        [self.engine connect:self.toneGeneratorNode to:self.engine.mainMixerNode format:self.audioFormat];
-        [self.engine connect:self.toneGeneratorNode to:self.engine.mainMixerNode fromBus:0 toBus:0 format:self.audioFormat];
-        [self startEngine];
-        self.engine.mainMixerNode.outputVolume = 1;
-        [self.toneGeneratorNode scheduleBuffer:self.audioBuffer atTime:nil options:AVAudioPlayerNodeBufferLoops completionHandler:nil];
-        [self.toneGeneratorNode play];
-        _isGeneratingTone = YES;
-    }
+#pragma mark for instuments
+- (void)initInstrumentsUnitSampler{
+    self.instrumentsNode = [[AVAudioUnitSampler alloc] init];
+    [self.engine attachNode:self.instrumentsNode];
+    [self.engine connect:self.instrumentsNode to:self.engine.mainMixerNode fromBus:0 toBus:0 format:self.audioFormat];
+    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Grand Piano" ofType:@"sf2"]];
+    [self unitSampler:self.instrumentsNode loadSoundBankInstrumentAtURL:soundFontFileURL];
+    
+    [self startEngine];
 }
 
-- (void)stopGenerateTone{
-    if (_isGeneratingTone) {
-        [self.toneGeneratorNode stop];
-        [self.engine stop];
-        [self.engine disconnectNodeInput:self.toneGeneratorNode];
-        _isGeneratingTone = NO;
-        
-    }
+#pragma mark for metronome
+- (void)setTempoBPM:(int)tempoBPM{
+    _tempoBPM = tempoBPM;
+    _isMetronomeValueChanged = YES;
+    
 }
+- (void)setBeatToTheBar:(int)beatToTheBar{
+    _beatToTheBar = beatToTheBar;
+    _isMetronomeValueChanged = YES;
+}
+- (void)setNoteValue:(int)noteValue{
+    _noteValue = noteValue;
+    _isMetronomeValueChanged = YES;
+}
+
+- (void)initMetronome{
+    self.metronomeNode = [[AVAudioUnitSampler alloc] init];
+    [self.engine attachNode:self.metronomeNode];
+    [self.engine connect:self.metronomeNode to:self.engine.mainMixerNode fromBus:0 toBus:1 format:self.audioFormat];
+    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"metronome" ofType:@"sf2"]];
+    [self unitSampler:self.metronomeNode loadSoundBankInstrumentAtURL:soundFontFileURL];
+    
+    [self startEngine];
+}
+
+- (void)startMetronome{
+    if (self.metronomeNode==NULL) {
+        [self initMetronome];
+    }
+    NSTimeInterval interval = 60.0/self.tempoBPM/(self.noteValue/4);
+    _metronomeCount = 0;
+    [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(loopMetronome:) userInfo:nil repeats:YES];
+    _isNeedToStopMetronome = NO;
+    self.isMetronomeRunning = YES;
+}
+- (void)stopMetronome{
+    _isNeedToStopMetronome = YES;
+    self.isMetronomeRunning = NO;
+}
+
+- (void)loopMetronome:(NSTimer *)timer{
+    if (_isNeedToStopMetronome) {
+        [timer invalidate];
+        return;
+    }
+    if (_isMetronomeValueChanged) {
+        _isMetronomeValueChanged = NO;
+        [timer invalidate];
+        [self startMetronome];
+        return;
+    }
+    uint8_t data1 = _metronomeCount%self.beatToTheBar==0?0:1;
+    
+    [self.metronomeNode sendMIDIEvent:'\x90' data1:data1 data2:50];
+    _metronomeCount++;
+//    [self.metronomeNode startNote:0 withVelocity:100 onChannel:2];
+}
+
+- (void)unitSampler:(AVAudioUnitSampler *)unitSampler loadSoundBankInstrumentAtURL:(NSURL *)soundFontFileURL{
+    uint8_t melodicBank = kAUSampler_DefaultMelodicBankMSB;
+    uint8_t gmHarpsichord = 0;
+    NSError *error;
+    BOOL result = [unitSampler loadSoundBankInstrumentAtURL:soundFontFileURL program:gmHarpsichord bankMSB:melodicBank bankLSB:0 error:&error];
+    NSAssert(result, @"Unable to set the preset property on the Sampler. Error %@", [error localizedDescription]);
+}
+
+#pragma mark record
 
 - (void)startRecording{
     if (!_isRecording) {
-        [self.engine connect:self.engine.inputNode to:self.engine.mainMixerNode fromBus:0 toBus:2 format:self.audioFormat];
-        [self.engine.inputNode installTapOnBus:0 bufferSize:4096 format:self.audioFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
-            [self.fft computeFFTWithBuffer:buffer.floatChannelData[0] withBufferSize:4096];
+        NSError *error;
+        
+        NSURL *fileURL = [NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:@"record.wav"]];
+        
+        AVAudioFile *mixerOutputFile = [[AVAudioFile alloc] initForWriting:fileURL settings:[[self.engine.mainMixerNode outputFormatForBus:0] settings] error:&error];
+        NSAssert(mixerOutputFile != nil, @"mixerOutputFile is nil, %@", [error localizedDescription]);
+//        [self.engine connect:self.engine.inputNode to:self.engine.mainMixerNode fromBus:0 toBus:3 format:self.audioFormat];
+        [self.engine.mainMixerNode installTapOnBus:0 bufferSize:4096 format:[self.engine.mainMixerNode outputFormatForBus:0] block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
+            
+            NSError *error;
+            BOOL success = NO;
+            
+            
+            // as AVAudioPCMBuffer's are delivered this will write sequentially. The buffer's frameLength signifies how much of the buffer is to be written
+            // IMPORTANT: The buffer format MUST match the file's processing format which is why outputFormatForBus: was used when creating the AVAudioFile object above
+            success = [mixerOutputFile writeFromBuffer:buffer error:&error];
+            NSAssert(success, @"error writing buffer data to file, %@", [error localizedDescription]);
             
         }];
-        self.engine.mainMixerNode.outputVolume = 0;
         [self startEngine];
         _isRecording = YES;
     }
@@ -123,10 +200,77 @@ static AudioEngine *sharedEngine = nil;
 
 - (void)stopRecording{
     if (_isRecording) {
+        [self.engine.mainMixerNode removeTapOnBus:0];
+//        [self.engine disconnectNodeInput:self.engine.inputNode];
+//        [self.engine stop];
+        _isRecording = NO;
+    }
+}
+
+- (void)playRecord{
+    NSURL *fileURL = [NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:@"record.wav"]];
+    NSError *error ;
+    AVAudioFile *file = [[AVAudioFile alloc] initForReading:fileURL error:&error];
+    [self.audioEffectPlayerDict enumerateKeysAndObjectsUsingBlock:^(NSURL * _Nonnull key, AVAudioPlayerNode * _Nonnull obj, BOOL * _Nonnull stop) {
+        [obj stop];
+    }];
+    [self stopMetronome];
+    [self.playerNode scheduleFile:file atTime:nil completionHandler:nil];
+    [self.playerNode play];
+
+}
+
+#pragma mark- for tuner
+
+- (void)attachAndConnectNode{
+    [self.engine attachNode:self.playerNode];
+}
+
+- (void)startGenerateTone{
+    if (!_isGeneratingTone) {
+        [self refreshToneFrequency];
+//        [self.engine connect:self.playerNode to:self.engine.mainMixerNode format:self.audioFormat];
+        [self startEngine];
+        self.engine.mainMixerNode.outputVolume = 1;
+        [self.playerNode scheduleBuffer:self.audioBuffer atTime:nil options:AVAudioPlayerNodeBufferLoops completionHandler:nil];
+        [self.playerNode play];
+        _isGeneratingTone = YES;
+    }
+}
+
+- (void)stopGenerateTone{
+    if (_isGeneratingTone) {
+        [self.playerNode stop];
+//        [self stopEngine];
+//        [self.engine disconnectNodeInput:self.playerNode];
+        _isGeneratingTone = NO;
+        
+    }
+}
+
+- (void)startTuning{
+    if (!_isTuning) {
+        if (!self.fft) {
+            self.fft = [EZAudioFFTRolling fftWithWindowSize:FFTViewControllerFFTWindowSize sampleRate:44100 delegate:self];
+        }
+        [self.engine connect:self.engine.inputNode to:self.engine.mainMixerNode fromBus:0 toBus:3 format:self.audioFormat];
+        [self.engine.inputNode installTapOnBus:0 bufferSize:4096 format:self.audioFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
+            [self.fft computeFFTWithBuffer:buffer.floatChannelData[0] withBufferSize:4096];
+            
+        }];
+        self.engine.mainMixerNode.outputVolume = 0;
+        [self startEngine];
+        _isTuning = YES;
+    }
+}
+
+- (void)stopTuning{
+    if (_isTuning) {
         [self.engine.inputNode removeTapOnBus:0];
         [self.engine disconnectNodeInput:self.engine.inputNode];
-        [self.engine stop];
-        _isRecording = NO;
+//        [self stopEngine];
+        _isTuning = NO;
+        self.engine.mainMixerNode.outputVolume = 1;
     }
 }
 
@@ -174,9 +318,9 @@ static AudioEngine *sharedEngine = nil;
     if (playerNode) {
         if (playerNode.isPlaying) {
             [playerNode pause];
-        }else
+        }else{
             [playerNode play];
-        
+        }
     }else
         [self addAudioEffectPlayerByURL:audioEffectFileURL];
 
@@ -190,7 +334,7 @@ static AudioEngine *sharedEngine = nil;
 //    self.audioEffectPlayerReuseDict[audioEffectFileURL] = playerNode;
 //    [self.audioEffectPlayerDict removeObjectForKey:audioEffectFileURL];
 }
-int playerCount = 0;
+int playerCount = 5;
 -(void)addAudioEffectPlayerByURL:(NSURL *)audioEffectFileURL{
     NSError *error;
     AVAudioPlayerNode *playerNode = [[AVAudioPlayerNode alloc] init];
@@ -219,8 +363,9 @@ int playerCount = 0;
     AVAudioSession *sessionInstance = [AVAudioSession sharedInstance];
     NSError *error;
     
+    
     // set the session category
-    bool success = [sessionInstance setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    bool success = [sessionInstance setCategory:AVAudioSessionCategoryPlayback error:&error];
     if (!success) NSLog(@"Error setting AVAudioSession category! %@\n", [error localizedDescription]);
     
     double hwSampleRate = 44100.0;
@@ -236,6 +381,19 @@ int playerCount = 0;
                                              selector:@selector(handleInterruption:)
                                                  name:AVAudioSessionInterruptionNotification
                                                object:sessionInstance];
+    
+    NSURL *url =[NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:@"mixerOutput.caf"]];
+    
+    
+    NSDictionary *settings=[NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSNumber numberWithFloat:8000.0],AVSampleRateKey,
+                            [NSNumber numberWithInt:kAudioFormatLinearPCM],AVFormatIDKey,
+                            [NSNumber numberWithInt:1],AVNumberOfChannelsKey,
+                            [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,
+                            [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,
+                            [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,
+                            nil];
+    
     
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self

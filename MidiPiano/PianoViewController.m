@@ -14,13 +14,14 @@
 
 @interface PianoViewController()<PianoKeyDelegate,AudioEffectTableViewCellDelegate,UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)PianoKey *lastKey;
-@property(nonatomic)int velocity;
+@property(nonatomic,assign)int velocity;
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
 @property (weak, nonatomic) IBOutlet UITableView *soundFontTableView;
 @property (weak, nonatomic) IBOutlet UITableView *audioEffectTableView;
 @property (nonatomic,strong) NSArray<NSURL *> *soundFontURLArray;
 @property (nonatomic,strong) NSArray<NSURL *> *audioEffectURLArray;
 @property (nonatomic,strong) NSMutableDictionary<NSIndexPath*,NSNumber *> *audioEffectTableViewData;
+@property (nonatomic,assign) BOOL isPlaying;
 @end
 
 static NSString *AudioEffectCellID = @"AudioEffectCell";
@@ -33,12 +34,14 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (void)viewDidDisappear:(BOOL)animated{
-    [[AudioEngine sharedEngine] stopEngine];
+//    [[AudioEngine sharedEngine] stopEngine];
 }
 - (void)initPiano{
+    self.isPlaying = NO;
     self.velocity = 50;
     self.velocityLabel.text = [NSString stringWithFormat:@"%d",self.velocity];
-    [MidiAudioManager sharedManager];
+//    [MidiAudioManager sharedManager];
+    [[AudioEngine sharedEngine] initInstrumentsUnitSampler];
     for (NSObject* subView in [self.view subviews]) {
         if ([subView isKindOfClass:[PianoKey class]]) {
             PianoKey *key = (PianoKey*)subView;
@@ -48,6 +51,7 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
     }
     
     self.soundFontURLArray = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"sf2" subdirectory:nil];
+    
 }
 
 - (void)initAudioEffectModule{
@@ -114,14 +118,17 @@ const char * noteForMidiNumber(int midiNumber) {
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    NSLog(@"%d fingers",touches.count);
+    self.soundFontTableView.hidden = YES;
+    self.audioEffectTableView.hidden = YES;
     UITouch *touch = [touches anyObject];
     for (NSObject* subView in [self.view subviews]) {
         if ([subView isKindOfClass:[PianoKey class]]) {
             PianoKey *key = (PianoKey*)subView;
             if ([key pointInside:[touch locationInView:self.view] withEvent:event]) {
-                MusicDeviceNoteParams note = [self getNoteByPianoKey:key];
-                [[MidiAudioManager sharedManager] startPlayNote:note];
+//                MusicDeviceNoteParams note = [self getNoteByPianoKey:key];
+//                [[MidiAudioManager sharedManager] startPlayNote:note];
+                [[AudioEngine sharedEngine].instrumentsNode startNote:key.tag withVelocity:self.velocity onChannel:2];
+//                [[AudioEngine sharedEngine] startMetronome];
                 self.lastKey = key;
                 break;
             }
@@ -137,10 +144,9 @@ const char * noteForMidiNumber(int midiNumber) {
             if ([key pointInside:[touch locationInView:self.view] withEvent:event]) {
                 if (self.lastKey!=key) {
                     if (self.lastKey) {
-                        [[MidiAudioManager sharedManager] stopPlayNote];
+                        [[AudioEngine sharedEngine].instrumentsNode stopNote:self.lastKey.tag onChannel:2];
                     }
-                    MusicDeviceNoteParams note = [self getNoteByPianoKey:key];
-                    [[MidiAudioManager sharedManager] startPlayNote:note];
+                    [[AudioEngine sharedEngine].instrumentsNode startNote:key.tag withVelocity:self.velocity onChannel:2];
                     self.lastKey = key;
                     
                 }else{
@@ -167,7 +173,9 @@ const char * noteForMidiNumber(int midiNumber) {
 //        }
 //    }
     if (self.lastKey) {
-                            [[MidiAudioManager sharedManager] stopPlayNote];
+//                            [[MidiAudioManager sharedManager] stopPlayNote];
+        [[AudioEngine sharedEngine].instrumentsNode stopNote:self.lastKey.tag onChannel:2];
+        self.lastKey = nil;
     }
     
 }
@@ -184,7 +192,7 @@ const char * noteForMidiNumber(int midiNumber) {
         note.argCount = 2;
         note.mPitch = key.tag;
         note.mVelocity = self.velocity;
-        NSValue *noteValue = [NSValue valueWithPointer:&note];
+//        NSValue *noteValue = [NSValue valueWithPointer:&note];
 //        [self.noteDict setObject:noteValue forKey:[NSNumber numberWithInteger:key.tag]];
 //    }
     return note;
@@ -234,7 +242,8 @@ const char * noteForMidiNumber(int midiNumber) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.soundFontTableView) {
-        [[MidiAudioManager sharedManager] loadFromDLSOrSoundFont:self.soundFontURLArray[indexPath.row] withPatch:0];
+//        [[MidiAudioManager sharedManager] loadFromDLSOrSoundFont:self.soundFontURLArray[indexPath.row] withPatch:0];
+        [[AudioEngine sharedEngine] unitSampler:[AudioEngine sharedEngine].instrumentsNode loadSoundBankInstrumentAtURL:self.soundFontURLArray[indexPath.row]];
         self.soundFontTableView.hidden = YES;
     }else if (tableView == self.audioEffectTableView){
         BOOL isPlaying = [self.audioEffectTableViewData[indexPath] boolValue];
@@ -255,6 +264,19 @@ const char * noteForMidiNumber(int midiNumber) {
     }else if(self.velocity<100)
         self.velocity +=10;
     self.velocityLabel.text = [NSString stringWithFormat:@"%d",self.velocity];
+    if (self.lastKey) {
+        [[AudioEngine sharedEngine].instrumentsNode startNote:self.lastKey.tag withVelocity:self.velocity onChannel:2];
+    }
+    
+}
+- (IBAction)startOrStopRecording:(id)sender {
+    if ([AudioEngine sharedEngine].isRecording) {
+        [[AudioEngine sharedEngine] stopRecording];
+    }else
+        [[AudioEngine sharedEngine]startRecording];
+}
+- (IBAction)playRecord:(id)sender {
+    [[AudioEngine sharedEngine] playRecord];
 }
 
 #pragma AudioEffectTableViewCell delegate
