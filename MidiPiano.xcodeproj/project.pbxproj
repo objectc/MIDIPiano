@@ -246,6 +246,7 @@
 				TargetAttributes = {
 					1741058C1DB7AB9A00F0B162 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = BGR4ZK9GEQ;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -435,7 +436,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BGR4ZK9GEQ;
 				INFOPLIST_FILE = MidiPiano/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.120id.MidiPiano;
@@ -447,7 +448,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BGR4ZK9GEQ;
 				INFOPLIST_FILE = MidiPiano/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.120id.MidiPiano;

@@ -253,7 +253,7 @@ static AudioEngine *sharedEngine = nil;
         if (!self.fft) {
             self.fft = [EZAudioFFTRolling fftWithWindowSize:FFTViewControllerFFTWindowSize sampleRate:44100 delegate:self];
         }
-        [self.engine connect:self.engine.inputNode to:self.engine.mainMixerNode fromBus:0 toBus:3 format:self.audioFormat];
+//        [self.engine connect:self.engine.inputNode to:self.engine.mainMixerNode fromBus:0 toBus:3 format:self.audioFormat];
         [self.engine.inputNode installTapOnBus:0 bufferSize:4096 format:self.audioFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
             [self.fft computeFFTWithBuffer:buffer.floatChannelData[0] withBufferSize:4096];
             
@@ -267,7 +267,6 @@ static AudioEngine *sharedEngine = nil;
 - (void)stopTuning{
     if (_isTuning) {
         [self.engine.inputNode removeTapOnBus:0];
-        [self.engine disconnectNodeInput:self.engine.inputNode];
 //        [self stopEngine];
         _isTuning = NO;
         self.engine.mainMixerNode.outputVolume = 1;
@@ -334,18 +333,19 @@ static AudioEngine *sharedEngine = nil;
 //    self.audioEffectPlayerReuseDict[audioEffectFileURL] = playerNode;
 //    [self.audioEffectPlayerDict removeObjectForKey:audioEffectFileURL];
 }
-int playerCount = 5;
+AVAudioNodeBus nextAvailableInputBus = 5;
 -(void)addAudioEffectPlayerByURL:(NSURL *)audioEffectFileURL{
     NSError *error;
     AVAudioPlayerNode *playerNode = [[AVAudioPlayerNode alloc] init];
     playerNode.volume = 0.5;
     AVAudioFile *audioEffectFile = [[AVAudioFile alloc] initForReading:audioEffectFileURL error:&error];
-    AVAudioPCMBuffer *fileBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:[audioEffectFile processingFormat] frameCapacity:(AVAudioFrameCount)[audioEffectFile length]];
-    NSAssert([audioEffectFile readIntoBuffer:fileBuffer error:&error], @"PCMBuffer read error %@ into buffer, %@",[audioEffectFileURL description], [error localizedDescription]);
+    AVAudioPCMBuffer *fileBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:audioEffectFile.processingFormat frameCapacity:(AVAudioFrameCount)[audioEffectFile length]];
+    [audioEffectFile readIntoBuffer:fileBuffer error:&error];
     self.audioEffectPlayerDict[audioEffectFileURL] = playerNode;
     [self.engine attachNode:playerNode];
-    [self.engine connect:playerNode to:self.engine.mainMixerNode fromBus:0 toBus:playerCount++ format:fileBuffer.format];
-    [playerNode scheduleBuffer:fileBuffer atTime:nil options:AVAudioPlayerNodeBufferLoops completionHandler:nil];
+    [self.engine connect:playerNode to:self.engine.mainMixerNode fromBus:0 toBus:nextAvailableInputBus format:fileBuffer.format];
+    ++nextAvailableInputBus;
+    [playerNode scheduleBuffer:fileBuffer atTime:nil options:AVAudioPlayerNodeBufferLoops   completionHandler:nil];
     [self startEngine];
     [playerNode play];
 }

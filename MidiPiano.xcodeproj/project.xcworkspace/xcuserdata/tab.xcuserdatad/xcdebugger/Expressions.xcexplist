@@ -3,7 +3,40 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "-[AudioEngine startGenerateTone]:AudioEngine.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TunerViewController returnMaxFrequency:]:TunerViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.inputFrequencyLabel.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[ViewController getNoteByPianoKey:]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MidiAudioManager startPlayNote:]:MidiAudioManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "&amp;note">
+            </PersistentString>
+            <PersistentString
+               value = "*note">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController touchesEnded:withEvent:]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[AudioEngine startTuning]:AudioEngine.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.engine.inputNode">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "-[AudioEngine startRecording]:AudioEngine.m">
@@ -20,28 +53,6 @@
                value = "note">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[MidiAudioManager startPlayNote:]:MidiAudioManager.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "&amp;note">
-            </PersistentString>
-            <PersistentString
-               value = "*note">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[TunerViewController returnMaxFrequency:]:TunerViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.inputFrequencyLabel.text">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[ViewController touchesEnded:withEvent:]:ViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

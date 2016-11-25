@@ -53,10 +53,14 @@
 }
 
 - (IBAction)startOrStop:(id)sender {
+    UIButton *btn = (UIButton *)sender;
     if ([AudioEngine sharedEngine].isMetronomeRunning) {
         [[AudioEngine sharedEngine] stopMetronome];
-    }else
+        [btn setTitle:@"开始" forState:UIControlStateNormal];
+    }else{
         [[AudioEngine sharedEngine] startMetronome];
+        [btn setTitle:@"停止" forState:UIControlStateNormal];
+    }
 }
 - (IBAction)tempoBPMChnagedAction:(id)sender {
     [AudioEngine sharedEngine].tempoBPM = self.tempoBPMSlider.value;
