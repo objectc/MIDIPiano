@@ -57,6 +57,7 @@ static AudioEngine *sharedEngine = nil;
     if (self = [super init]) {
         [self initAVAudioSession];
         self.engine = [[AVAudioEngine alloc] init];
+        self.engine.inputNode;
         self.playerNode = [[AVAudioPlayerNode alloc] init];
         self.audioFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100 channels:2];
         self.audioBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:self.audioFormat frameCapacity:kSamplesPerBuffer];
@@ -95,7 +96,7 @@ static AudioEngine *sharedEngine = nil;
 
 #pragma mark for instuments
 - (void)initInstrumentsUnitSampler{
-    self.instrumentsNode = [[AVAudioUnitSampler alloc] init];
+        self.instrumentsNode = [[AVAudioUnitSampler alloc] init];
     [self.engine attachNode:self.instrumentsNode];
     [self.engine connect:self.instrumentsNode to:self.engine.mainMixerNode fromBus:0 toBus:0 format:self.audioFormat];
     NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Grand Piano" ofType:@"sf2"]];
