@@ -366,7 +366,7 @@ AVAudioNodeBus nextAvailableInputBus = 5;
     
     
     // set the session category
-    bool success = [sessionInstance setCategory:AVAudioSessionCategoryPlayback error:&error];
+    BOOL success = [sessionInstance setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error];
     if (!success) NSLog(@"Error setting AVAudioSession category! %@\n", [error localizedDescription]);
     
     double hwSampleRate = 44100.0;

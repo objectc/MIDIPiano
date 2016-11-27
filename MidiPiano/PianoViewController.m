@@ -270,10 +270,14 @@ const char * noteForMidiNumber(int midiNumber) {
     
 }
 - (IBAction)startOrStopRecording:(id)sender {
+    UIButton *btn = (UIButton *)sender;
     if ([AudioEngine sharedEngine].isRecording) {
+        [btn setTitle:@"录音" forState:UIControlStateNormal];
         [[AudioEngine sharedEngine] stopRecording];
-    }else
+    }else{
         [[AudioEngine sharedEngine]startRecording];
+        [btn setTitle:@"停止" forState:UIControlStateNormal];
+    }
 }
 - (IBAction)playRecord:(id)sender {
     [[AudioEngine sharedEngine] playRecord];
