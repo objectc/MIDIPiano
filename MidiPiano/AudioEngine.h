@@ -28,6 +28,7 @@
 @property (nonatomic,assign) BOOL isMIDIPlaying;
 @property (nonatomic,assign) BOOL isRecording;
 @property (nonatomic,assign) BOOL isMetronomeRunning;
+@property (nonatomic,strong) AVAudioPlayerNode *playerNode;
 
 //节拍器相关
 //bpm
@@ -57,7 +58,7 @@
 
 - (void)startRecording;
 - (void)stopRecording;
-- (void)playRecord;
+- (void)startOrStopPlayingRecord:(void(^)(void))playCompletionHandler;
 
 - (void)playOrStopAudioPlayerByURL:(NSURL *)audioEffectFileURL;
 - (void)adjustAudioPlayerVolume:(float)volume byURL:(NSURL *)audioEffectFileURL;

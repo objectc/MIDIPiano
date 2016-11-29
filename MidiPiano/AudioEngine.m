@@ -21,11 +21,12 @@
     BOOL _isNeedToStopMetronome;
     int  _metronomeCount;
     AVAudioFile *_currentMetronomeFile;
+    BOOL _isRecordPlaying;
 }
 
 @property (nonatomic,strong) AVAudioEngine *engine;
 //调音器
-@property (nonatomic,strong) AVAudioPlayerNode *playerNode;
+
 @property (nonatomic,strong) AVAudioPCMBuffer *audioBuffer;
 @property (nonatomic,strong) AVAudioFormat *audioFormat;
 @property (nonatomic,assign) float currentFrequency;
@@ -74,6 +75,8 @@ static AudioEngine *sharedEngine = nil;
         self.tempoBPM = 100;
         self.beatToTheBar = 1;
         self.noteValue = 4;
+        
+        _isRecordPlaying    = NO;
     }
     return self;
 }
@@ -208,17 +211,29 @@ static AudioEngine *sharedEngine = nil;
     }
 }
 
-- (void)playRecord{
-    NSURL *fileURL = [NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:@"record.wav"]];
-    NSError *error ;
-    AVAudioFile *file = [[AVAudioFile alloc] initForReading:fileURL error:&error];
-    [self.audioEffectPlayerDict enumerateKeysAndObjectsUsingBlock:^(NSURL * _Nonnull key, AVAudioPlayerNode * _Nonnull obj, BOOL * _Nonnull stop) {
-        [obj stop];
-    }];
-    [self stopMetronome];
-    [self.playerNode scheduleFile:file atTime:nil completionHandler:nil];
-    [self.playerNode play];
-
+- (void)startOrStopPlayingRecord:(void(^)(void))playCompletionHandler{
+    if (_isRecordPlaying) {
+        _isRecordPlaying = NO;
+        [self.playerNode stop];
+    }else{
+        _isRecordPlaying = YES;
+        NSURL *fileURL = [NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:@"record.wav"]];
+        NSError *error ;
+        AVAudioFile *file = [[AVAudioFile alloc] initForReading:fileURL error:&error];
+        [self.audioEffectPlayerDict enumerateKeysAndObjectsUsingBlock:^(NSURL * _Nonnull key, AVAudioPlayerNode * _Nonnull obj, BOOL * _Nonnull stop) {
+            [obj stop];
+        }];
+        [self stopMetronome];
+        [self.playerNode scheduleFile:file atTime:nil completionHandler:^{
+            //这个回掉不在主线程里
+            if (_isRecordPlaying) {
+                dispatch_sync(dispatch_get_main_queue(), playCompletionHandler);
+                _isRecordPlaying = NO;
+            }
+    
+        }];
+        [self.playerNode play];
+    }
 }
 
 #pragma mark- for tuner

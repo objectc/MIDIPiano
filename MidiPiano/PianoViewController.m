@@ -280,7 +280,15 @@ const char * noteForMidiNumber(int midiNumber) {
     }
 }
 - (IBAction)playRecord:(id)sender {
-    [[AudioEngine sharedEngine] playRecord];
+     UIButton *btn = (UIButton *)sender;
+    [[AudioEngine sharedEngine] startOrStopPlayingRecord:^{
+        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
+    }];
+    if ([AudioEngine sharedEngine].playerNode.isPlaying) {
+        [btn setTitle:@"停止" forState:UIControlStateNormal];
+    }else{
+        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
+    }
 }
 
 #pragma AudioEffectTableViewCell delegate
