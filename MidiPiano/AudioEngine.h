@@ -43,8 +43,8 @@
 - (void)stopEngine;
 - (void)unitSampler:(AVAudioUnitSampler *)unitSampler loadSoundBankInstrumentAtURL:(NSURL *)soundFontFileURL;
 - (void)initInstrumentsUnitSampler;
-- (void)startNote:(uint8_t)note withVelocity:(uint8_t)velocity onChannel:(uint8_t)channel;
-- (void)stopNote:(uint8_t)note onChannel:(uint8_t)channel;
+//- (void)startNote:(uint8_t)note withVelocity:(uint8_t)velocity onChannel:(uint8_t)channel;
+//- (void)stopNote:(uint8_t)note onChannel:(uint8_t)channel;
 
 - (void)initMetronome;
 - (void)startMetronome;
@@ -58,7 +58,7 @@
 
 - (void)startRecording;
 - (void)stopRecording;
-- (void)startOrStopPlayingRecord:(void(^)(void))playCompletionHandler;
+- (void)startOrStopPlayingRecordAtURL:(NSURL *)url withCompletion:(void(^)(void))playCompletionHandler;
 
 - (void)playOrStopAudioPlayerByURL:(NSURL *)audioEffectFileURL;
 - (void)adjustAudioPlayerVolume:(float)volume byURL:(NSURL *)audioEffectFileURL;

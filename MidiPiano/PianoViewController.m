@@ -18,9 +18,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
 @property (weak, nonatomic) IBOutlet UITableView *soundFontTableView;
 @property (weak, nonatomic) IBOutlet UITableView *audioEffectTableView;
+@property (weak, nonatomic) IBOutlet UITableView *recordFilesTableView;
 @property (nonatomic,strong) NSArray<NSURL *> *soundFontURLArray;
 @property (nonatomic,strong) NSArray<NSURL *> *audioEffectURLArray;
+@property (nonatomic,strong) NSArray<NSURL *> *recordFilesURLArray;
 @property (nonatomic,strong) NSMutableDictionary<NSIndexPath*,NSNumber *> *audioEffectTableViewData;
+@property (nonatomic,strong) NSMutableDictionary<NSIndexPath*,NSNumber *> *recordFilesTableViewData;
 @property (nonatomic,assign) BOOL isPlaying;
 @end
 
@@ -57,7 +60,8 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
 - (void)initAudioEffectModule{
     self.audioEffectURLArray = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"m4a" subdirectory:nil];
     self.audioEffectTableViewData = [[NSMutableDictionary alloc] init];
-//    [self.audioEffectTableView registerClass:[AudioEffectTableViewCell class] forCellReuseIdentifier:AudioEffectCellID];
+    self.recordFilesTableViewData = [[NSMutableDictionary alloc] init];
+
 }
 
 /*
@@ -120,6 +124,7 @@ const char * noteForMidiNumber(int midiNumber) {
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     self.soundFontTableView.hidden = YES;
     self.audioEffectTableView.hidden = YES;
+    self.recordFilesTableView.hidden = YES;
     UITouch *touch = [touches anyObject];
     for (NSObject* subView in [self.view subviews]) {
         if ([subView isKindOfClass:[PianoKey class]]) {
@@ -217,6 +222,8 @@ const char * noteForMidiNumber(int midiNumber) {
         return self.soundFontURLArray.count;
     }else if(tableView == self.audioEffectTableView){
         return self.audioEffectURLArray.count;
+    }else if (tableView == self.recordFilesTableView){
+        return self.recordFilesURLArray.count;
     }
     return 0;
 }
@@ -236,6 +243,10 @@ const char * noteForMidiNumber(int midiNumber) {
 //        ((AudioEffectTableViewCell *)cell).delegate = self;
         ((AudioEffectTableViewCell *)cell).titleLabel.text = [self.audioEffectURLArray[indexPath.row].lastPathComponent stringByDeletingPathExtension];
 //        cell.textLabel.text = AudioEffectCellID;
+    }else if (tableView==self.recordFilesTableView){
+        cell = [self.recordFilesTableView dequeueReusableCellWithIdentifier:AudioEffectCellID forIndexPath:indexPath];
+        ((AudioEffectTableViewCell *)cell).titleLabel.text = [self.recordFilesURLArray[indexPath.row].lastPathComponent stringByDeletingPathExtension];
+        
     }
     return cell;
 }
@@ -251,6 +262,15 @@ const char * noteForMidiNumber(int midiNumber) {
         AudioEffectTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [cell setIsPlaying:!isPlaying];
         [[AudioEngine sharedEngine] playOrStopAudioPlayerByURL:self.audioEffectURLArray[indexPath.row]];
+    }else if (tableView == self.recordFilesTableView){
+        BOOL isPlaying = [self.recordFilesTableViewData[indexPath] boolValue];
+        self.recordFilesTableViewData[indexPath] = [NSNumber numberWithBool:!isPlaying];
+        AudioEffectTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [cell setIsPlaying:!isPlaying];
+        [[AudioEngine sharedEngine] startOrStopPlayingRecordAtURL:self.recordFilesURLArray[indexPath.row] withCompletion:^{
+            [cell setIsPlaying:NO];
+            self.recordFilesTableViewData[indexPath] = [NSNumber numberWithBool:NO];
+        }];
     }
 }
 
@@ -280,15 +300,38 @@ const char * noteForMidiNumber(int midiNumber) {
     }
 }
 - (IBAction)playRecord:(id)sender {
-     UIButton *btn = (UIButton *)sender;
-    [[AudioEngine sharedEngine] startOrStopPlayingRecord:^{
-        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
-    }];
-    if ([AudioEngine sharedEngine].playerNode.isPlaying) {
-        [btn setTitle:@"停止" forState:UIControlStateNormal];
-    }else{
-        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
+    NSError *error;
+    NSURL *fileFolderURL = [NSURL URLWithString:NSTemporaryDirectory()];
+    self.recordFilesURLArray = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:fileFolderURL includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:&error];
+    
+    if ((nil != self.recordFilesURLArray) && ([self.recordFilesURLArray count] > 0)){
+        NSArray * sortedFileList = [self.recordFilesURLArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSDate * mDate1 = nil;
+            NSDate * mDate2 = nil;
+            if ([(NSURL*)obj1 getResourceValue:&mDate1 forKey:NSURLCreationDateKey error:nil] &&
+                [(NSURL*)obj2 getResourceValue:&mDate2 forKey:NSURLCreationDateKey error:nil]) {
+                if ([mDate1 timeIntervalSince1970] < [mDate2 timeIntervalSince1970]) {
+                    return (NSComparisonResult)NSOrderedDescending;
+                }else{
+                    return (NSComparisonResult)NSOrderedAscending;
+                }
+            }
+            return (NSComparisonResult)NSOrderedSame; // there was an error in getting the value
+        }];
+        self.recordFilesURLArray = sortedFileList;
     }
+    
+    [self.recordFilesTableView reloadData];
+    self.recordFilesTableView.hidden = !self.recordFilesTableView.hidden;
+//     UIButton *btn = (UIButton *)sender;
+//    [[AudioEngine sharedEngine] startOrStopPlayingRecord:^{
+//        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
+//    }];
+//    if ([AudioEngine sharedEngine].playerNode.isPlaying) {
+//        [btn setTitle:@"停止" forState:UIControlStateNormal];
+//    }else{
+//        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
+//    }
 }
 
 #pragma AudioEffectTableViewCell delegate

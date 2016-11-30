@@ -11,7 +11,6 @@
 @import Accelerate;
 
 #import "EZAudioFFT.h"
-
 @interface AudioEngine ()<EZAudioFFTDelegate>
 
 {
@@ -22,6 +21,8 @@
     int  _metronomeCount;
     AVAudioFile *_currentMetronomeFile;
     BOOL _isRecordPlaying;
+    NSURL *_lastReocrdURL;
+    void(^_lastRecordPlayCompletionHandler)(void);
 }
 
 @property (nonatomic,strong) AVAudioEngine *engine;
@@ -179,8 +180,8 @@ static AudioEngine *sharedEngine = nil;
 - (void)startRecording{
     if (!_isRecording) {
         NSError *error;
-        
-        NSURL *fileURL = [NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:@"record.wav"]];
+        NSString *fileName = [NSString stringWithFormat:@"%.f.wav",[[NSDate date] timeIntervalSince1970]];
+        NSURL *fileURL = [NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:fileName]];
         
         AVAudioFile *mixerOutputFile = [[AVAudioFile alloc] initForWriting:fileURL settings:[[self.engine.mainMixerNode outputFormatForBus:0] settings] error:&error];
         NSAssert(mixerOutputFile != nil, @"mixerOutputFile is nil, %@", [error localizedDescription]);
@@ -211,15 +212,22 @@ static AudioEngine *sharedEngine = nil;
     }
 }
 
-- (void)startOrStopPlayingRecord:(void(^)(void))playCompletionHandler{
+- (void)startOrStopPlayingRecordAtURL:(NSURL *)url withCompletion:(void(^)(void))playCompletionHandler{
     if (_isRecordPlaying) {
         _isRecordPlaying = NO;
         [self.playerNode stop];
-    }else{
+//        playCompletionHandler();
+        if (_lastRecordPlayCompletionHandler) {
+            _lastRecordPlayCompletionHandler();
+        }
+    }
+    if (url!=_lastReocrdURL) {
+        _lastRecordPlayCompletionHandler = playCompletionHandler;
         _isRecordPlaying = YES;
+        _lastReocrdURL = url;
         NSURL *fileURL = [NSURL URLWithString:[NSTemporaryDirectory() stringByAppendingString:@"record.wav"]];
         NSError *error ;
-        AVAudioFile *file = [[AVAudioFile alloc] initForReading:fileURL error:&error];
+        AVAudioFile *file = [[AVAudioFile alloc] initForReading:url error:&error];
         [self.audioEffectPlayerDict enumerateKeysAndObjectsUsingBlock:^(NSURL * _Nonnull key, AVAudioPlayerNode * _Nonnull obj, BOOL * _Nonnull stop) {
             [obj stop];
         }];
@@ -229,6 +237,7 @@ static AudioEngine *sharedEngine = nil;
             if (_isRecordPlaying) {
                 dispatch_sync(dispatch_get_main_queue(), playCompletionHandler);
                 _isRecordPlaying = NO;
+                _lastReocrdURL = NULL;
             }
     
         }];

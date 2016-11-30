@@ -484,6 +484,38 @@
                                     <action selector="playRecord:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cNR-qA-iKb"/>
                                 </connections>
                             </button>
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QeS-tl-Lay">
+                                <rect key="frame" x="20" y="38" width="201" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="playback" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AudioEffectCell" rowHeight="44" id="R53-cG-rIM" customClass="AudioEffectTableViewCell">
+                                        <rect key="frame" x="0.0" y="28" width="201" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R53-cG-rIM" id="ZIg-M4-X7f">
+                                            <rect key="frame" x="0.0" y="0.0" width="201" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="6Xd-RR-I4z">
+                                                    <rect key="frame" x="8" y="11" width="117" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="vxJ-vV-2Tt"/>
+                                            <outlet property="titleLabel" destination="6Xd-RR-I4z" id="rTv-wx-cM0"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="ioC-zk-kg2"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="3jE-Cx-HKg"/>
+                                </connections>
+                            </tableView>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Jbd-jv-Qzh">
                                 <rect key="frame" x="558" y="39" width="106" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -554,6 +586,7 @@
                     <navigationItem key="navigationItem" id="bY5-PR-I0X"/>
                     <connections>
                         <outlet property="audioEffectTableView" destination="xvl-Gt-vkp" id="9bW-nS-iYX"/>
+                        <outlet property="recordFilesTableView" destination="QeS-tl-Lay" id="Ros-ag-gXA"/>
                         <outlet property="soundFontTableView" destination="Jbd-jv-Qzh" id="3QH-zh-V7K"/>
                         <outlet property="velocityLabel" destination="wdN-Tw-re8" id="Han-fW-yBm"/>
                     </connections>
