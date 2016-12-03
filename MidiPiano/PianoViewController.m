@@ -11,8 +11,10 @@
 #import "PianoKey.h"
 #import "AudioEffectTableViewCell.h"
 #import "AudioEngine.h"
-
-@interface PianoViewController()<PianoKeyDelegate,AudioEffectTableViewCellDelegate,UITableViewDelegate,UITableViewDataSource>
+static MIDIClientRef _MIDIClientRef;
+static MIDIPortRef _MIDIInputPortRef;
+@interface PianoViewController()<PianoKeyDelegate,AudioEffectTableViewCellDelegate,UITableViewDelegate,UITableViewDataSource>{
+}
 @property(nonatomic,weak)PianoKey *lastKey;
 @property(nonatomic,assign)int velocity;
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
@@ -34,10 +36,15 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
     [super viewDidLoad];
     [self initPiano];
     [self initAudioEffectModule];
+    [self initMIDIClient];
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (void)viewDidDisappear:(BOOL)animated{
 //    [[AudioEngine sharedEngine] stopEngine];
+    self.navigationController.navigationBarHidden = NO;
+}
+- (void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = YES;
 }
 - (void)initPiano{
     self.isPlaying = NO;
@@ -323,16 +330,91 @@ const char * noteForMidiNumber(int midiNumber) {
     
     [self.recordFilesTableView reloadData];
     self.recordFilesTableView.hidden = !self.recordFilesTableView.hidden;
-//     UIButton *btn = (UIButton *)sender;
-//    [[AudioEngine sharedEngine] startOrStopPlayingRecord:^{
-//        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
-//    }];
-//    if ([AudioEngine sharedEngine].playerNode.isPlaying) {
-//        [btn setTitle:@"停止" forState:UIControlStateNormal];
-//    }else{
-//        [btn setTitle:@"播放录音" forState:UIControlStateNormal];
-//    }
 }
+
+- (void)initMIDIClient{
+    OSStatus err;
+    NSString *clientName = @"inputClient";
+    err = MIDIClientCreate((CFStringRef)CFBridgingRetain(clientName), pianoMIDINotifyProc, NULL, &_MIDIClientRef);
+    if (err != noErr) {
+        NSLog(@"MIDIClientCreate err = %d", err);
+        return ;
+    }
+    
+    NSString *inputPortName = @"inputPort";
+    err = MIDIInputPortCreate(
+                              _MIDIClientRef, (CFStringRef)CFBridgingRetain(inputPortName),
+                              pianoMIDIInputProc, NULL, &_MIDIInputPortRef);
+    if (err != noErr) {
+        NSLog(@"MIDIInputPortCreate err = %d", err);
+        return ;
+    }
+}
+
+static void pianoMIDIInputProc(const MIDIPacketList *pktlist,
+              void *readProcRefCon, void *srcConnRefCon)
+{
+    MIDIPacket *packet = (MIDIPacket *)&(pktlist->packet[0]);
+    UInt32 packetCount = pktlist->numPackets;
+    
+    for (NSInteger i = 0; i < packetCount; i++) {
+        
+        Byte mes = packet->data[0] & 0xF0;
+        Byte ch = packet->data[0] & 0x0F;
+        
+        if ((mes == 0x90) && (packet->data[2] != 0)) {
+            NSLog(@"note on number = %2.2x / velocity = %2.2x / channel = %2.2x",
+                  packet->data[1], packet->data[2], ch);
+            [[AudioEngine sharedEngine].instrumentsNode startNote:packet->data[1] withVelocity:packet->data[2] onChannel:2];
+        } else if (mes == 0x80 || mes == 0x90) {
+            [[AudioEngine sharedEngine].instrumentsNode stopNote:packet->data[1] onChannel:2];
+            NSLog(@"note off number = %2.2x / velocity = %2.2x / channel = %2.2x",
+                  packet->data[1], packet->data[2], ch);
+        } else if (mes == 0xB0) {
+            NSLog(@"cc number = %2.2x / data = %2.2x / channel = %2.2x",
+                  packet->data[1], packet->data[2], ch);
+        } else {
+            NSLog(@"etc");
+        }
+        
+        packet = MIDIPacketNext(packet);
+    }
+}
+
+static void pianoMIDINotifyProc(const MIDINotification *message, void *refCon)
+{
+    OSStatus err;
+    switch (message->messageID)
+    {
+        case kMIDIMsgObjectAdded:{
+            ItemCount sourceCount = MIDIGetNumberOfSources();
+            
+            NSLog( @"errsourceCount = %lu", sourceCount );
+            for (ItemCount i = 0; i < sourceCount; i++) {
+                MIDIEndpointRef sourcePointRef = MIDIGetSource(i);
+                err = MIDIPortConnectSource(_MIDIInputPortRef, sourcePointRef, NULL);
+                if (err != noErr) {
+                    NSLog(@"MIDIPortConnectSource err = %d", err);
+                    return ;
+                }
+            }
+        }
+            break;
+        case kMIDIMsgObjectRemoved:
+            break;
+        case kMIDIMsgSetupChanged:
+            break;
+        case kMIDIMsgPropertyChanged:
+            break;
+        case kMIDIMsgThruConnectionsChanged:
+            break;
+        case kMIDIMsgSerialPortOwnerChanged:
+            break;
+        case kMIDIMsgIOError:
+            break;
+    }
+}
+
 
 #pragma AudioEffectTableViewCell delegate
 

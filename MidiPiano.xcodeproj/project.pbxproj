@@ -38,6 +38,7 @@
 		1794E9A91DDC15F50048F781 /* sweep.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1794E9A51DDC15F50048F781 /* sweep.m4a */; };
 		1794E9AC1DDC9E310048F781 /* AudioEffectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1794E9AB1DDC9E310048F781 /* AudioEffectTableViewCell.m */; };
 		17D902381DE5E3B2007E5B5F /* MetronomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D902371DE5E3B2007E5B5F /* MetronomeViewController.m */; };
+		17D902641DF302EC007E5B5F /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D902631DF302EC007E5B5F /* CoreAudioKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +86,7 @@
 		1794E9AB1DDC9E310048F781 /* AudioEffectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEffectTableViewCell.m; sourceTree = "<group>"; };
 		17D902361DE5E3B2007E5B5F /* MetronomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetronomeViewController.h; sourceTree = "<group>"; };
 		17D902371DE5E3B2007E5B5F /* MetronomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetronomeViewController.m; sourceTree = "<group>"; };
+		17D902631DF302EC007E5B5F /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17D902641DF302EC007E5B5F /* CoreAudioKit.framework in Frameworks */,
 				17501AA21DBD31B0007DF9CF /* CoreMIDI.framework in Frameworks */,
 				174105AB1DB7ABFD00F0B162 /* CoreAudio.framework in Frameworks */,
 				174105A91DB7ABF300F0B162 /* AudioToolbox.framework in Frameworks */,
@@ -184,6 +187,7 @@
 		174105A71DB7ABF300F0B162 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				17D902631DF302EC007E5B5F /* CoreAudioKit.framework */,
 				17501AA11DBD31B0007DF9CF /* CoreMIDI.framework */,
 				174105AA1DB7ABFD00F0B162 /* CoreAudio.framework */,
 				174105A81DB7ABF300F0B162 /* AudioToolbox.framework */,
