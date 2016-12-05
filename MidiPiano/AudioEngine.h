@@ -12,6 +12,7 @@
 @class AudioEngine;
 @protocol ToneGeneratorDelegate <NSObject>
 - (float) requestForToneFrequency;
+- (float) requestForToneVolume;
 
 @end
 

@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *inputFrequencyLabel;
 @property (nonatomic, strong)AudioEngine *audioEngine;
 @property (weak, nonatomic) IBOutlet UISlider *frequencySlider;
+@property (weak, nonatomic) IBOutlet UIStepper *frequencyStepper;
+@property (weak, nonatomic) IBOutlet UISlider *toneVolumeSlider;
 
 @end
 
@@ -50,14 +52,30 @@
     [self.audioEngine stopGenerateTone];
     [self.audioEngine startTuning];
 }
-- (IBAction)playerFrequencyChangedAction:(id)sender {
+- (IBAction)frequencySliderValueChangedAction:(id)sender {
+    
     UISlider *slider = (UISlider *)sender;
     self.playerFrequencyLabel.text = [NSString stringWithFormat:@"%.f Hz",slider.value];
+    self.frequencyStepper.value = slider.value;
     [self.audioEngine refreshToneFrequency];
 }
 
+- (IBAction)frequencyStepperValueChangedAction:(id)sender {
+    
+    UIStepper *stepper = (UIStepper *)sender;
+    self.playerFrequencyLabel.text = [NSString stringWithFormat:@"%.f Hz",stepper.value];
+    self.frequencySlider.value = stepper.value;
+    [self.audioEngine refreshToneFrequency];
+}
+- (IBAction)toneVolumeSliderValueChangedAction:(id)sender {
+    [self.audioEngine refreshToneFrequency];
+}
 - (float)requestForToneFrequency{
     return self.frequencySlider.value;
+}
+
+- (float)requestForToneVolume{
+    return self.toneVolumeSlider.value;
 }
 
 - (void)returnMaxFrequency:(float)maxFrequency{

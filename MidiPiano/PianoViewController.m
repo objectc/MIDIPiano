@@ -15,8 +15,9 @@ static MIDIClientRef _MIDIClientRef;
 static MIDIPortRef _MIDIInputPortRef;
 @interface PianoViewController()<PianoKeyDelegate,AudioEffectTableViewCellDelegate,UITableViewDelegate,UITableViewDataSource>{
 }
-@property(nonatomic,weak)PianoKey *lastKey;
-@property(nonatomic,assign)int velocity;
+@property (nonatomic,weak)PianoKey *lastKey;
+@property (nonatomic,strong) NSMutableDictionary<NSString*,PianoKey*> *lastKeyDict;
+@property (nonatomic,assign)int velocity;
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
 @property (weak, nonatomic) IBOutlet UITableView *soundFontTableView;
 @property (weak, nonatomic) IBOutlet UITableView *audioEffectTableView;
@@ -61,6 +62,8 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
     }
     
     self.soundFontURLArray = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"sf2" subdirectory:nil];
+    self.view.multipleTouchEnabled = YES;
+    self.lastKeyDict = [[NSMutableDictionary alloc] init];
     
 }
 
@@ -132,43 +135,43 @@ const char * noteForMidiNumber(int midiNumber) {
     self.soundFontTableView.hidden = YES;
     self.audioEffectTableView.hidden = YES;
     self.recordFilesTableView.hidden = YES;
-    UITouch *touch = [touches anyObject];
-    for (NSObject* subView in [self.view subviews]) {
-        if ([subView isKindOfClass:[PianoKey class]]) {
-            PianoKey *key = (PianoKey*)subView;
-            if ([key pointInside:[touch locationInView:self.view] withEvent:event]) {
-//                MusicDeviceNoteParams note = [self getNoteByPianoKey:key];
-//                [[MidiAudioManager sharedManager] startPlayNote:note];
-                [[AudioEngine sharedEngine].instrumentsNode startNote:key.tag withVelocity:self.velocity onChannel:2];
-//                [[AudioEngine sharedEngine] startMetronome];
-                self.lastKey = key;
-                break;
+    [touches enumerateObjectsUsingBlock:^(UITouch * _Nonnull obj, BOOL * _Nonnull stop) {
+        UITouch *touch = obj;
+        for (NSObject* subView in [self.view subviews]) {
+            if ([subView isKindOfClass:[PianoKey class]]) {
+                PianoKey *key = (PianoKey*)subView;
+                if ([key pointInside:[touch locationInView:self.view] withEvent:event]) {
+                    [self startNoteOnKey:key withVelocity:self.velocity onChannel:2];
+                    self.lastKeyDict[[NSString stringWithFormat:@"%d",touch]] = key;
+                    break;
+                }
             }
         }
-    }
+    }];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    for (NSObject* subView in [self.view subviews]) {
-        if ([subView isKindOfClass:[PianoKey class]]) {
-            PianoKey *key = (PianoKey*)subView;
-            if ([key pointInside:[touch locationInView:self.view] withEvent:event]) {
-                if (self.lastKey!=key) {
-                    if (self.lastKey) {
-                        [[AudioEngine sharedEngine].instrumentsNode stopNote:self.lastKey.tag onChannel:2];
+    [touches enumerateObjectsUsingBlock:^(UITouch * _Nonnull obj, BOOL * _Nonnull stop) {
+        for (NSObject* subView in [self.view subviews]) {
+            UITouch *touch = obj;
+            if ([subView isKindOfClass:[PianoKey class]]) {
+                PianoKey *key = (PianoKey*)subView;
+                if ([key pointInside:[touch locationInView:self.view] withEvent:event]) {
+                    PianoKey *lastKey = self.lastKeyDict[[NSString stringWithFormat:@"%d",touch]];
+                    if (lastKey!=key) {
+                        if (lastKey) {
+                            [self stopNoteOnKey:lastKey withVelocity:self.velocity onChannel:2];
+                        }
+                        [self startNoteOnKey:key withVelocity:self.velocity onChannel:2];
+                        self.lastKeyDict[[NSString stringWithFormat:@"%d",touch]] = key;
+                    }else{
+                        
                     }
-                    [[AudioEngine sharedEngine].instrumentsNode startNote:key.tag withVelocity:self.velocity onChannel:2];
-                    self.lastKey = key;
-                    
-                }else{
-                    
+                    break;
                 }
-                break;
             }
         }
-    }
-    
+    }];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -184,12 +187,23 @@ const char * noteForMidiNumber(int midiNumber) {
 //            }
 //        }
 //    }
-    if (self.lastKey) {
-//                            [[MidiAudioManager sharedManager] stopPlayNote];
-        [[AudioEngine sharedEngine].instrumentsNode stopNote:self.lastKey.tag onChannel:2];
-        self.lastKey = nil;
-    }
-    
+    [touches enumerateObjectsUsingBlock:^(UITouch * _Nonnull obj, BOOL * _Nonnull stop) {
+        UITouch *touch = obj;
+        PianoKey *lastKey = self.lastKeyDict[[NSString stringWithFormat:@"%d",touch]];
+        if (lastKey) {
+            [self stopNoteOnKey:lastKey withVelocity:self.velocity onChannel:2];
+            lastKey = nil;
+        }
+    }];
+     
+}
+
+
+- (void)startNoteOnKey:(PianoKey *)key withVelocity:(uint8_t)velocity onChannel:(uint8_t)channel{
+    [[AudioEngine sharedEngine].instrumentsNode startNote:key.tag withVelocity:velocity onChannel:channel];
+}
+- (void)stopNoteOnKey:(PianoKey *)key withVelocity:(uint8_t)velocity onChannel:(uint8_t)channel{
+    [[AudioEngine sharedEngine].instrumentsNode stopNote:key.tag onChannel:channel];
 }
 
 - (MusicDeviceNoteParams)getNoteByPianoKey:(PianoKey *)key{
@@ -362,7 +376,7 @@ static void pianoMIDIInputProc(const MIDIPacketList *pktlist,
         Byte mes = packet->data[0] & 0xF0;
         Byte ch = packet->data[0] & 0x0F;
         
-        if ((mes == 0x90) && (packet->data[2] != 0)) {
+        if ((mes == 0x90) && (packet->data[2] !=+ 0)) {
             NSLog(@"note on number = %2.2x / velocity = %2.2x / channel = %2.2x",
                   packet->data[1], packet->data[2], ch);
             [[AudioEngine sharedEngine].instrumentsNode startNote:packet->data[1] withVelocity:packet->data[2] onChannel:2];

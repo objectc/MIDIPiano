@@ -215,6 +215,7 @@ static AudioEngine *sharedEngine = nil;
 - (void)startOrStopPlayingRecordAtURL:(NSURL *)url withCompletion:(void(^)(void))playCompletionHandler{
     if (_isRecordPlaying) {
         _isRecordPlaying = NO;
+        self.playerNode.volume = 1;
         [self.playerNode stop];
 //        playCompletionHandler();
         if (_lastRecordPlayCompletionHandler) {
@@ -256,7 +257,6 @@ static AudioEngine *sharedEngine = nil;
         [self refreshToneFrequency];
 //        [self.engine connect:self.playerNode to:self.engine.mainMixerNode format:self.audioFormat];
         [self startEngine];
-        self.engine.mainMixerNode.outputVolume = 1;
         [self.playerNode scheduleBuffer:self.audioBuffer atTime:nil options:AVAudioPlayerNodeBufferLoops completionHandler:nil];
         [self.playerNode play];
         _isGeneratingTone = YES;
@@ -300,8 +300,13 @@ static AudioEngine *sharedEngine = nil;
 
 - (void)refreshToneFrequency{
     float newFrequency;
-    if (_delegate && [_delegate respondsToSelector:@selector(requestForToneFrequency)]) {
-        newFrequency = [_delegate requestForToneFrequency];
+    if (_delegate){
+        if ([_delegate respondsToSelector:@selector(requestForToneFrequency)]) {
+            newFrequency = [_delegate requestForToneFrequency];
+        }
+        if ([_delegate respondsToSelector:@selector(requestForToneVolume)]) {
+            self.playerNode.volume = [_delegate requestForToneVolume];
+        }
     }
     if (newFrequency!=_currentFrequency) {
         _currentFrequency = newFrequency;
