@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MetronomeViewController : UIViewController
+@interface MetronomeViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 @end

@@ -11,12 +11,15 @@
 #import "PianoKey.h"
 #import "AudioEffectTableViewCell.h"
 #import "AudioEngine.h"
+//蓝牙外接设备
 static MIDIClientRef _MIDIClientRef;
 static MIDIPortRef _MIDIInputPortRef;
+
 @interface PianoViewController()<PianoKeyDelegate,AudioEffectTableViewCellDelegate,UITableViewDelegate,UITableViewDataSource>{
 }
-@property (nonatomic,weak)PianoKey *lastKey;
+//用于记录多点触摸按下的键位
 @property (nonatomic,strong) NSMutableDictionary<NSString*,PianoKey*> *lastKeyDict;
+//乐器演奏强度
 @property (nonatomic,assign)int velocity;
 @property (weak, nonatomic) IBOutlet UILabel *velocityLabel;
 @property (weak, nonatomic) IBOutlet UITableView *soundFontTableView;
@@ -41,12 +44,12 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (void)viewDidDisappear:(BOOL)animated{
-//    [[AudioEngine sharedEngine] stopEngine];
     self.navigationController.navigationBarHidden = NO;
 }
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
 }
+//钢琴模块初始化
 - (void)initPiano{
     self.isPlaying = NO;
     self.velocity = 50;
@@ -66,7 +69,7 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
     self.lastKeyDict = [[NSMutableDictionary alloc] init];
     
 }
-
+//音乐合成初始化
 - (void)initAudioEffectModule{
     self.audioEffectURLArray = [[NSBundle mainBundle] URLsForResourcesWithExtension:@"m4a" subdirectory:nil];
     self.audioEffectTableViewData = [[NSMutableDictionary alloc] init];
@@ -74,47 +77,7 @@ static NSString *AudioEffectCellID = @"AudioEffectCell";
 
 }
 
-/*
-- (void)addGestureToBtn{
-    
-    for (NSObject* subView in [self.view subviews]) {
-        if ([subView isKindOfClass:[PianoKey class]]) {
-            
-//            UISwipeGestureRecognizer *panGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(panGesAction:)];
-            PianoKey *btn = (PianoKey *)subView;
-            btn.delegate = self;
-//            [btn addTarget:self action:@selector(keyPressed2:) forControlEvents:UIControlEventTouchDragEnter];
-//            [btn addGestureRecognizer:panGes];
-        }
-    }
-}
-
-
-- (IBAction)keyPressed2:(id)sender {
-    UIButton *pressedBtn = sender;
-    NSString *btnTitle = [NSString stringWithUTF8String:noteForMidiNumber(pressedBtn.tag)];
-    [pressedBtn setTitle:btnTitle forState:UIControlStateNormal];
-    MidiAudioManager *midiManager = [MidiAudioManager sharedManager];
-    [midiManager playNote:(UInt32)pressedBtn.tag];
-}
-
-- (IBAction)keyPressed:(id)sender {
-//    UIButton *pressedBtn = sender;
-//    NSString *btnTitle = [NSString stringWithUTF8String:noteForMidiNumber(pressedBtn.tag)];
-//    [pressedBtn setTitle:btnTitle forState:UIControlStateNormal];
-//    MidiAudioManager *midiManager = [MidiAudioManager sharedManager];
-//    [midiManager playNote:(UInt32)pressedBtn.tag];
-    
-    MusicDeviceNoteParams note;
-    note.argCount = 2;
-    note.mPitch = 45;
-    note.mVelocity = 1;
-    
-    [[MidiAudioManager sharedManager] startPlayNote:note];
-}
-*/
-
-
+//键位音符表
 const char * noteForMidiNumber(int midiNumber) {
     
     const char * const noteArraySharps[] = {"", "", "", "", "", "", "", "", "", "", "", "",
@@ -131,6 +94,7 @@ const char * noteForMidiNumber(int midiNumber) {
     return noteArraySharps[midiNumber];
 }
 
+//touch实现
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     self.soundFontTableView.hidden = YES;
     self.audioEffectTableView.hidden = YES;
@@ -175,18 +139,6 @@ const char * noteForMidiNumber(int midiNumber) {
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-//    UITouch *touch = [touches anyObject];
-//    for (NSObject* subView in [self.view subviews]) {
-//        if ([subView isKindOfClass:[PianoKey class]]) {
-//            PianoKey *key = (PianoKey*)subView;
-//            if ([key pointInside:[touch locationInView:self.view] withEvent:event]) {
-//                if (self.lastKey==key) {
-//                    [[MidiAudioManager sharedManager] stopPlayNote];
-//                    break;
-//                }
-//            }
-//        }
-//    }
     [touches enumerateObjectsUsingBlock:^(UITouch * _Nonnull obj, BOOL * _Nonnull stop) {
         UITouch *touch = obj;
         PianoKey *lastKey = self.lastKeyDict[[NSString stringWithFormat:@"%d",touch]];
@@ -206,24 +158,6 @@ const char * noteForMidiNumber(int midiNumber) {
     [[AudioEngine sharedEngine].instrumentsNode stopNote:key.tag onChannel:channel];
 }
 
-- (MusicDeviceNoteParams)getNoteByPianoKey:(PianoKey *)key{
-//    NSValue *noteValue = [self.noteDict objectForKey:[NSNumber numberWithInteger:key.tag]];
-    MusicDeviceNoteParams note;
-//    if (false) {
-//        MusicDeviceNoteParams *oldNote;
-//        oldNote = [noteValue pointerValue];
-////        [noteValue getValue:<#(nonnull void *)#>];
-//        [self.noteDict removeObjectForKey:[NSNumber numberWithInteger:key.tag]];
-//    }else{
-        note.argCount = 2;
-        note.mPitch = key.tag;
-        note.mVelocity = self.velocity;
-//        NSValue *noteValue = [NSValue valueWithPointer:&note];
-//        [self.noteDict setObject:noteValue forKey:[NSNumber numberWithInteger:key.tag]];
-//    }
-    return note;
-    
-}
 
 #pragma mark Sound Font
 - (IBAction)switchSoundFont:(id)sender {
@@ -274,7 +208,6 @@ const char * noteForMidiNumber(int midiNumber) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.soundFontTableView) {
-//        [[MidiAudioManager sharedManager] loadFromDLSOrSoundFont:self.soundFontURLArray[indexPath.row] withPatch:0];
         [[AudioEngine sharedEngine] unitSampler:[AudioEngine sharedEngine].instrumentsNode loadSoundBankInstrumentAtURL:self.soundFontURLArray[indexPath.row]];
         self.soundFontTableView.hidden = YES;
     }else if (tableView == self.audioEffectTableView){
@@ -297,7 +230,7 @@ const char * noteForMidiNumber(int midiNumber) {
 
 
 #pragma mark Velocity
-
+//调整乐器演奏强度
 - (IBAction)adjustVelocity:(id)sender{
     UIButton *btn = (UIButton *)sender;
     if (btn.tag==0 && self.velocity>0) {
@@ -305,11 +238,10 @@ const char * noteForMidiNumber(int midiNumber) {
     }else if(self.velocity<100)
         self.velocity +=10;
     self.velocityLabel.text = [NSString stringWithFormat:@"%d",self.velocity];
-    if (self.lastKey) {
-        [[AudioEngine sharedEngine].instrumentsNode startNote:self.lastKey.tag withVelocity:self.velocity onChannel:2];
-    }
-    
 }
+
+#pragma mark recording
+//开始结束录音
 - (IBAction)startOrStopRecording:(id)sender {
     UIButton *btn = (UIButton *)sender;
     if ([AudioEngine sharedEngine].isRecording) {
@@ -320,6 +252,7 @@ const char * noteForMidiNumber(int midiNumber) {
         [btn setTitle:@"停止" forState:UIControlStateNormal];
     }
 }
+//录音播放
 - (IBAction)playRecord:(id)sender {
     NSError *error;
     NSURL *fileFolderURL = [NSURL URLWithString:NSTemporaryDirectory()];
@@ -346,6 +279,8 @@ const char * noteForMidiNumber(int midiNumber) {
     self.recordFilesTableView.hidden = !self.recordFilesTableView.hidden;
 }
 
+#pragma mark 外接设备
+//外接设备初始化
 - (void)initMIDIClient{
     OSStatus err;
     NSString *clientName = @"inputClient";
@@ -364,7 +299,7 @@ const char * noteForMidiNumber(int midiNumber) {
         return ;
     }
 }
-
+//外接设备数据接收
 static void pianoMIDIInputProc(const MIDIPacketList *pktlist,
               void *readProcRefCon, void *srcConnRefCon)
 {
@@ -375,12 +310,12 @@ static void pianoMIDIInputProc(const MIDIPacketList *pktlist,
         
         Byte mes = packet->data[0] & 0xF0;
         Byte ch = packet->data[0] & 0x0F;
-        
+        //mes == 0x90 表示start
         if ((mes == 0x90) && (packet->data[2] !=+ 0)) {
             NSLog(@"note on number = %2.2x / velocity = %2.2x / channel = %2.2x",
                   packet->data[1], packet->data[2], ch);
             [[AudioEngine sharedEngine].instrumentsNode startNote:packet->data[1] withVelocity:packet->data[2] onChannel:2];
-        } else if (mes == 0x80 || mes == 0x90) {
+        } else if (mes == 0x80 || mes == 0x90) { //mes == 0x80表示stop
             [[AudioEngine sharedEngine].instrumentsNode stopNote:packet->data[1] onChannel:2];
             NSLog(@"note off number = %2.2x / velocity = %2.2x / channel = %2.2x",
                   packet->data[1], packet->data[2], ch);
@@ -394,7 +329,7 @@ static void pianoMIDIInputProc(const MIDIPacketList *pktlist,
         packet = MIDIPacketNext(packet);
     }
 }
-
+//外接设备回调
 static void pianoMIDINotifyProc(const MIDINotification *message, void *refCon)
 {
     OSStatus err;

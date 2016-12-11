@@ -25,11 +25,13 @@
 @interface AudioEngine : NSObject
 
 @property (nonatomic,weak) id<ToneGeneratorDelegate,FFTDelegate>delegate;
+//乐器
 @property (nonatomic,strong) AVAudioUnitSampler *instrumentsNode;
+//声音播放
+@property (nonatomic,strong) AVAudioPlayerNode *playerNode;
 @property (nonatomic,assign) BOOL isMIDIPlaying;
 @property (nonatomic,assign) BOOL isRecording;
 @property (nonatomic,assign) BOOL isMetronomeRunning;
-@property (nonatomic,strong) AVAudioPlayerNode *playerNode;
 
 //节拍器相关
 //bpm
@@ -42,10 +44,10 @@
 +(AudioEngine *)sharedEngine;
 
 - (void)stopEngine;
+//加载乐器声音文件
 - (void)unitSampler:(AVAudioUnitSampler *)unitSampler loadSoundBankInstrumentAtURL:(NSURL *)soundFontFileURL;
+//初始化乐器
 - (void)initInstrumentsUnitSampler;
-//- (void)startNote:(uint8_t)note withVelocity:(uint8_t)velocity onChannel:(uint8_t)channel;
-//- (void)stopNote:(uint8_t)note onChannel:(uint8_t)channel;
 
 - (void)initMetronome;
 - (void)startMetronome;

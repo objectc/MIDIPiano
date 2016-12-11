@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *beatLabel;
 @property (weak, nonatomic) IBOutlet UILabel *noteValueLabel;
 @property (weak, nonatomic) IBOutlet UISlider *tempoBPMSlider;
+@property (weak, nonatomic) IBOutlet UITableView *switchTableView;
 
 @end
 
@@ -25,6 +26,7 @@
     [super viewDidLoad];
     self.beatStep.value = [AudioEngine sharedEngine].beatToTheBar;
     self.noteValueStep.value = [AudioEngine sharedEngine].noteValue;
+    self.switchTableView.hidden = YES;
     [self refreshView];
     
     // Do any additional setup after loading the view.
@@ -64,17 +66,84 @@
     [AudioEngine sharedEngine].tempoBPM = self.tempoBPMSlider.value;
     [self refreshView];
 }
-- (IBAction)noteValueChangedAction:(id)sender {
-    self.beatStep.maximumValue = self.noteValueStep.value;
-    [AudioEngine sharedEngine].noteValue = self.noteValueStep.value;
-    [self refreshView];
+
+- (IBAction)showSwitchTableView:(id)sender {
+    self.switchTableView.hidden = NO;
 }
 
-- (IBAction)beatChangedAction:(id)sender {
-    [AudioEngine sharedEngine].beatToTheBar = self.beatStep.value;
-    [self refreshView];
+#pragma mark -table view
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 6;
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (cell==nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    }
+    switch (indexPath.row) {
+        case 0:
+            cell.textLabel.text = @"1/4";
+            break;
+        case 1:
+            cell.textLabel.text = @"2/4";
+            break;
+        case 2:
+            cell.textLabel.text = @"3/4";
+            break;
+        case 3:
+            cell.textLabel.text = @"4/4";
+            break;
+        case 4:
+            cell.textLabel.text = @"3/8";
+            break;
+        case 5:
+            cell.textLabel.text = @"6/8";
+        default:
+            break;
+    }
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    switch (indexPath.row) {
+        case 0:{
+            [AudioEngine sharedEngine].beatToTheBar = 1;
+            [AudioEngine sharedEngine].noteValue = 4;
+        }
+            break;
+        case 1:{
+            [AudioEngine sharedEngine].beatToTheBar = 2;
+            [AudioEngine sharedEngine].noteValue = 4;
+            
+        }
+            break;
+        case 2:{
+            [AudioEngine sharedEngine].beatToTheBar = 3;
+            [AudioEngine sharedEngine].noteValue = 4;
+        }
+            break;
+        case 3:{
+            [AudioEngine sharedEngine].beatToTheBar = 4;
+            [AudioEngine sharedEngine].noteValue = 4;
+        }
+            break;
+        case 4:{
+            [AudioEngine sharedEngine].beatToTheBar = 3;
+            [AudioEngine sharedEngine].noteValue = 8;
+        }
+            break;
+        case 5:{
+            [AudioEngine sharedEngine].beatToTheBar = 6;
+            [AudioEngine sharedEngine].noteValue = 8;
+        }
+        default:
+            break;
+    }
+    [self refreshView];
+    self.switchTableView.hidden = YES;
+}
 
 /*
 #pragma mark - Navigation
