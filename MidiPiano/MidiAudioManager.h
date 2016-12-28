@@ -13,8 +13,8 @@
 #import <CoreAudio/CoreAudioTypes.h>
 
 @interface MidiAudioManager : NSObject
-
-+(id)sharedManager;
+@property (readwrite) AudioUnit samplerUnit;
++(MidiAudioManager*)sharedManager;
 - (MusicSequence)loadMidiFileWithURL:(NSURL*)url;
 - (void)playMusicSequence:(MusicSequence)seq;
 - (void)playNote:(UInt32)note;

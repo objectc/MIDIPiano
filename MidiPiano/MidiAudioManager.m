@@ -12,7 +12,7 @@
 @property (readwrite) AUGraph processingGraph;
 @property (readwrite) AUNode samplerNode;
 @property (readwrite) AUNode ioNode;
-@property (readwrite) AudioUnit samplerUnit;
+//@property (readwrite) AudioUnit samplerUnit;
 @property (readwrite) AudioUnit ioUnit;
 @property (readwrite) NoteInstanceID instanceID;
 @end
@@ -52,9 +52,9 @@ void MyMIDIReadProc (const MIDINotification  *message, void *refCon) {
     [self configureAndStartAudioProcessingGraph:self.processingGraph];
 //    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Full Grand Piano" ofType:@"sf2"]];
     
-    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Grand Piano" ofType:@"sf2"]];
+    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"gs_instruments" ofType:@"dls"]];
         
-    [self loadFromDLSOrSoundFont:soundFontFileURL withPatch:0];
+    [self loadFromDLSOrSoundFont:soundFontFileURL withPatch:57];
     }
     return self;
 }
@@ -185,7 +185,7 @@ void MyMIDIReadProc (const MIDINotification  *message, void *refCon) {
 
     AUSamplerInstrumentData instrumentData;
     instrumentData.fileURL  = (__bridge CFURLRef) fileURL;
-    instrumentData.instrumentType = kInstrumentType_SF2Preset;
+    instrumentData.instrumentType = kInstrumentType_DLSPreset;
     instrumentData.bankMSB  = kAUSampler_DefaultMelodicBankMSB;
     instrumentData.bankLSB  = kAUSampler_DefaultBankLSB;
     instrumentData.presetID = (UInt8) presetNumber;

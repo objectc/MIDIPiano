@@ -10,13 +10,11 @@
 		1731C0671DCAE2E40060185F /* PianoKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 1731C0661DCAE2E40060185F /* PianoKey.m */; };
 		1731C06E1DCB2FE80060185F /* TunerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1731C06D1DCB2FE80060185F /* TunerViewController.m */; };
 		1731C07C1DCC3B6C0060185F /* DynoPiano1.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0741DCC3B6C0060185F /* DynoPiano1.sf2 */; };
-		1731C07E1DCC3B6C0060185F /* Elec. Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0761DCC3B6C0060185F /* Elec. Piano.sf2 */; };
 		1731C07F1DCC3B6C0060185F /* Finger Bass.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0771DCC3B6C0060185F /* Finger Bass.sf2 */; };
 		1731C0821DCC3B6C0060185F /* Gitano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C07A1DCC3B6C0060185F /* Gitano.sf2 */; };
 		1731C0831DCC3B6C0060185F /* Ney Flute.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C07B1DCC3B6C0060185F /* Ney Flute.sf2 */; };
 		1731C0881DCC3C320060185F /* Grand Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0841DCC3C320060185F /* Grand Piano.sf2 */; };
 		1731C0891DCC3C320060185F /* Slack Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0851DCC3C320060185F /* Slack Piano.sf2 */; };
-		1731C08A1DCC3C320060185F /* Stereo Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1731C0861DCC3C320060185F /* Stereo Piano.sf2 */; };
 		174105921DB7AB9A00F0B162 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 174105911DB7AB9A00F0B162 /* main.m */; };
 		174105951DB7AB9A00F0B162 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 174105941DB7AB9A00F0B162 /* AppDelegate.m */; };
 		174105981DB7AB9A00F0B162 /* PianoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 174105971DB7AB9A00F0B162 /* PianoViewController.m */; };
@@ -27,6 +25,12 @@
 		174105AB1DB7ABFD00F0B162 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 174105AA1DB7ABFD00F0B162 /* CoreAudio.framework */; };
 		17501A941DBD12B6007DF9CF /* MidiAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 17501A931DBD12B6007DF9CF /* MidiAudioManager.m */; };
 		17501AA21DBD31B0007DF9CF /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17501AA11DBD31B0007DF9CF /* CoreMIDI.framework */; };
+		175ACB471E1279F00019668B /* kh_trumpet.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB401E1279F00019668B /* kh_trumpet.sf2 */; };
+		175ACB481E1279F00019668B /* Papelmedia_Trumpet.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB411E1279F00019668B /* Papelmedia_Trumpet.sf2 */; };
+		175ACB491E1279F00019668B /* uoi_trumpet.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB421E1279F00019668B /* uoi_trumpet.sf2 */; };
+		175ACB551E127AF60019668B /* trumpet_sus.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB511E127AF60019668B /* trumpet_sus.sf2 */; };
+		175ACB571E1286B70019668B /* gs_instruments.dls in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB561E1286B70019668B /* gs_instruments.dls */; };
+		175ACB5A1E1292720019668B /* MIDIController.m in Sources */ = {isa = PBXBuildFile; fileRef = 175ACB591E1292720019668B /* MIDIController.m */; };
 		177650691DD4CF250002F3F0 /* AudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 177650681DD4CF250002F3F0 /* AudioEngine.m */; };
 		177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */ = {isa = PBXBuildFile; fileRef = 1776506F1DD56F120002F3F0 /* EZAudioFFT.m */; };
 		177650731DD56F120002F3F0 /* EZAudioUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 177650711DD56F120002F3F0 /* EZAudioUtilities.m */; };
@@ -37,6 +41,8 @@
 		1794E9A81DDC15F50048F781 /* piano.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1794E9A41DDC15F50048F781 /* piano.m4a */; };
 		1794E9A91DDC15F50048F781 /* sweep.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1794E9A51DDC15F50048F781 /* sweep.m4a */; };
 		1794E9AC1DDC9E310048F781 /* AudioEffectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1794E9AB1DDC9E310048F781 /* AudioEffectTableViewCell.m */; };
+		17A8DDBD1E0870BC00F89147 /* test.mid in Resources */ = {isa = PBXBuildFile; fileRef = 17A8DDBC1E0870BC00F89147 /* test.mid */; };
+		17A8DDBF1E08C44300F89147 /* fate.mid in Resources */ = {isa = PBXBuildFile; fileRef = 17A8DDBE1E08C44300F89147 /* fate.mid */; };
 		17D902381DE5E3B2007E5B5F /* MetronomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D902371DE5E3B2007E5B5F /* MetronomeViewController.m */; };
 		17D902641DF302EC007E5B5F /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D902631DF302EC007E5B5F /* CoreAudioKit.framework */; };
 /* End PBXBuildFile section */
@@ -47,13 +53,11 @@
 		1731C06C1DCB2FE80060185F /* TunerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TunerViewController.h; sourceTree = "<group>"; };
 		1731C06D1DCB2FE80060185F /* TunerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TunerViewController.m; sourceTree = "<group>"; };
 		1731C0741DCC3B6C0060185F /* DynoPiano1.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = DynoPiano1.sf2; sourceTree = "<group>"; };
-		1731C0761DCC3B6C0060185F /* Elec. Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Elec. Piano.sf2"; sourceTree = "<group>"; };
 		1731C0771DCC3B6C0060185F /* Finger Bass.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Finger Bass.sf2"; sourceTree = "<group>"; };
 		1731C07A1DCC3B6C0060185F /* Gitano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Gitano.sf2; sourceTree = "<group>"; };
 		1731C07B1DCC3B6C0060185F /* Ney Flute.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ney Flute.sf2"; sourceTree = "<group>"; };
 		1731C0841DCC3C320060185F /* Grand Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Grand Piano.sf2"; sourceTree = "<group>"; };
 		1731C0851DCC3C320060185F /* Slack Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Slack Piano.sf2"; sourceTree = "<group>"; };
-		1731C0861DCC3C320060185F /* Stereo Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Stereo Piano.sf2"; sourceTree = "<group>"; };
 		1741058D1DB7AB9A00F0B162 /* MidiPiano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MidiPiano.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		174105911DB7AB9A00F0B162 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		174105931DB7AB9A00F0B162 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -69,6 +73,13 @@
 		17501A921DBD12B6007DF9CF /* MidiAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidiAudioManager.h; sourceTree = "<group>"; };
 		17501A931DBD12B6007DF9CF /* MidiAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MidiAudioManager.m; sourceTree = "<group>"; };
 		17501AA11DBD31B0007DF9CF /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		175ACB401E1279F00019668B /* kh_trumpet.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = kh_trumpet.sf2; sourceTree = "<group>"; };
+		175ACB411E1279F00019668B /* Papelmedia_Trumpet.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Papelmedia_Trumpet.sf2; sourceTree = "<group>"; };
+		175ACB421E1279F00019668B /* uoi_trumpet.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = uoi_trumpet.sf2; sourceTree = "<group>"; };
+		175ACB511E127AF60019668B /* trumpet_sus.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = trumpet_sus.sf2; sourceTree = "<group>"; };
+		175ACB561E1286B70019668B /* gs_instruments.dls */ = {isa = PBXFileReference; lastKnownFileType = file; path = gs_instruments.dls; sourceTree = "<group>"; };
+		175ACB581E1292720019668B /* MIDIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDIController.h; sourceTree = "<group>"; };
+		175ACB591E1292720019668B /* MIDIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIDIController.m; sourceTree = "<group>"; };
 		177650671DD4CF250002F3F0 /* AudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEngine.h; sourceTree = "<group>"; };
 		177650681DD4CF250002F3F0 /* AudioEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEngine.m; sourceTree = "<group>"; };
 		1776506E1DD56F120002F3F0 /* EZAudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioFFT.h; sourceTree = "<group>"; };
@@ -84,6 +95,8 @@
 		1794E9A51DDC15F50048F781 /* sweep.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sweep.m4a; sourceTree = "<group>"; };
 		1794E9AA1DDC9E310048F781 /* AudioEffectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEffectTableViewCell.h; sourceTree = "<group>"; };
 		1794E9AB1DDC9E310048F781 /* AudioEffectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEffectTableViewCell.m; sourceTree = "<group>"; };
+		17A8DDBC1E0870BC00F89147 /* test.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; path = test.mid; sourceTree = "<group>"; };
+		17A8DDBE1E08C44300F89147 /* fate.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; path = fate.mid; sourceTree = "<group>"; };
 		17D902361DE5E3B2007E5B5F /* MetronomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetronomeViewController.h; sourceTree = "<group>"; };
 		17D902371DE5E3B2007E5B5F /* MetronomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetronomeViewController.m; sourceTree = "<group>"; };
 		17D902631DF302EC007E5B5F /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
@@ -118,11 +131,14 @@
 		1731C0731DCC3B6C0060185F /* SF */ = {
 			isa = PBXGroup;
 			children = (
+				175ACB561E1286B70019668B /* gs_instruments.dls */,
+				175ACB511E127AF60019668B /* trumpet_sus.sf2 */,
+				175ACB401E1279F00019668B /* kh_trumpet.sf2 */,
+				175ACB411E1279F00019668B /* Papelmedia_Trumpet.sf2 */,
+				175ACB421E1279F00019668B /* uoi_trumpet.sf2 */,
 				1731C0741DCC3B6C0060185F /* DynoPiano1.sf2 */,
 				1731C0841DCC3C320060185F /* Grand Piano.sf2 */,
 				1731C0851DCC3C320060185F /* Slack Piano.sf2 */,
-				1731C0861DCC3C320060185F /* Stereo Piano.sf2 */,
-				1731C0761DCC3B6C0060185F /* Elec. Piano.sf2 */,
 				1731C0771DCC3B6C0060185F /* Finger Bass.sf2 */,
 				1731C07A1DCC3B6C0060185F /* Gitano.sf2 */,
 				1731C07B1DCC3B6C0060185F /* Ney Flute.sf2 */,
@@ -150,13 +166,15 @@
 		1741058F1DB7AB9A00F0B162 /* MidiPiano */ = {
 			isa = PBXGroup;
 			children = (
+				17A8DDBC1E0870BC00F89147 /* test.mid */,
+				17A8DDBE1E08C44300F89147 /* fate.mid */,
 				1794E9A11DDC15F50048F781 /* AudioEffect */,
 				1776506D1DD56F120002F3F0 /* 3rd Party */,
 				1731C0731DCC3B6C0060185F /* SF */,
 				1731C0641DCAE2C00060185F /* UI */,
 				174105931DB7AB9A00F0B162 /* AppDelegate.h */,
-				178CB6641DE1E25A00DB78AB /* metronome.sf2 */,
 				174105941DB7AB9A00F0B162 /* AppDelegate.m */,
+				178CB6641DE1E25A00DB78AB /* metronome.sf2 */,
 				174105961DB7AB9A00F0B162 /* PianoViewController.h */,
 				174105971DB7AB9A00F0B162 /* PianoViewController.m */,
 				1731C06C1DCB2FE80060185F /* TunerViewController.h */,
@@ -198,6 +216,8 @@
 		1776506D1DD56F120002F3F0 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				175ACB581E1292720019668B /* MIDIController.h */,
+				175ACB591E1292720019668B /* MIDIController.m */,
 				1776506E1DD56F120002F3F0 /* EZAudioFFT.h */,
 				1776506F1DD56F120002F3F0 /* EZAudioFFT.m */,
 				177650741DD578F20002F3F0 /* TPCircularBuffer.c */,
@@ -250,6 +270,7 @@
 				TargetAttributes = {
 					1741058C1DB7AB9A00F0B162 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = APMJMGHDS7;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -282,13 +303,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1731C08A1DCC3C320060185F /* Stereo Piano.sf2 in Resources */,
+				17A8DDBF1E08C44300F89147 /* fate.mid in Resources */,
+				175ACB481E1279F00019668B /* Papelmedia_Trumpet.sf2 in Resources */,
+				175ACB551E127AF60019668B /* trumpet_sus.sf2 in Resources */,
 				1794E9A61DDC15F50048F781 /* amen.m4a in Resources */,
 				1731C0831DCC3B6C0060185F /* Ney Flute.sf2 in Resources */,
+				175ACB471E1279F00019668B /* kh_trumpet.sf2 in Resources */,
 				174105A01DB7AB9A00F0B162 /* LaunchScreen.storyboard in Resources */,
 				178CB6651DE1E25A00DB78AB /* metronome.sf2 in Resources */,
 				1731C07C1DCC3B6C0060185F /* DynoPiano1.sf2 in Resources */,
-				1731C07E1DCC3B6C0060185F /* Elec. Piano.sf2 in Resources */,
+				175ACB491E1279F00019668B /* uoi_trumpet.sf2 in Resources */,
 				1731C0821DCC3B6C0060185F /* Gitano.sf2 in Resources */,
 				1794E9A71DDC15F50048F781 /* bass.m4a in Resources */,
 				1741059D1DB7AB9A00F0B162 /* Assets.xcassets in Resources */,
@@ -297,6 +321,8 @@
 				1741059B1DB7AB9A00F0B162 /* Main.storyboard in Resources */,
 				1794E9A81DDC15F50048F781 /* piano.m4a in Resources */,
 				1794E9A91DDC15F50048F781 /* sweep.m4a in Resources */,
+				17A8DDBD1E0870BC00F89147 /* test.mid in Resources */,
+				175ACB571E1286B70019668B /* gs_instruments.dls in Resources */,
 				1731C0891DCC3C320060185F /* Slack Piano.sf2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,6 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				175ACB5A1E1292720019668B /* MIDIController.m in Sources */,
 				177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */,
 				17D902381DE5E3B2007E5B5F /* MetronomeViewController.m in Sources */,
 				174105981DB7AB9A00F0B162 /* PianoViewController.m in Sources */,
@@ -439,11 +466,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = APMJMGHDS7;
 				INFOPLIST_FILE = MidiPiano/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.120id.MidiPiano;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -451,11 +479,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = APMJMGHDS7;
 				INFOPLIST_FILE = MidiPiano/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.120id.MidiPiano;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

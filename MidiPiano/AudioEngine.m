@@ -37,6 +37,7 @@
 
 //音频合成器
 @property (nonatomic,strong) NSMutableDictionary<NSURL*,AVAudioPlayerNode*> *audioEffectPlayerDict;
+@property (nonatomic,strong) AVAudioSequencer *sequencer;
 
 //节拍器
 @property (nonatomic,strong) AVAudioUnitSampler *metronomeNode;
@@ -89,6 +90,7 @@ static AudioEngine *sharedEngine = nil;
         BOOL success;
         success = [_engine startAndReturnError:&error];
         NSAssert(success, @"couldn't start engine, %@", [error localizedDescription]);
+//        [self initAudioSequencer];
     }
 }
 
@@ -347,6 +349,23 @@ static AudioEngine *sharedEngine = nil;
 
 #pragma mark for audio mix
 //音乐合成相关
+- (void)initAudioSequencer{
+    self.sequencer = [[AVAudioSequencer alloc] initWithAudioEngine:self.engine];
+    NSURL *midiURL = [[NSBundle mainBundle] URLForResource:@"fate" withExtension:@"mid"];
+    [self.sequencer loadFromURL:midiURL options:AVMusicSequenceLoadSMF_ChannelsToTracks error:nil];
+    
+    AVAudioUnitSampler *unitSampler = [[AVAudioUnitSampler alloc] init];
+    [self.engine attachNode:unitSampler];
+    [self.engine connect:unitSampler to:self.engine.mainMixerNode fromBus:0 toBus:8 format:self.audioFormat];
+    NSURL *soundFontFileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Grand Piano" ofType:@"sf2"]];
+    [self unitSampler:unitSampler loadSoundBankInstrumentAtURL:soundFontFileURL];
+    
+    for (AVMusicTrack *track in self.sequencer.tracks) {
+        track.destinationAudioUnit = unitSampler;
+    }
+    [self.sequencer prepareToPlay];
+    [self.sequencer startAndReturnError:nil];
+}
 - (NSMutableDictionary *)audioEffectPlayerDict{
     if (_audioEffectPlayerDict == NULL) {
         _audioEffectPlayerDict = [[NSMutableDictionary alloc] init];

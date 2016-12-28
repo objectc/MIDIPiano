@@ -239,6 +239,15 @@ const char * noteForMidiNumber(int midiNumber) {
         self.velocity +=10;
     self.velocityLabel.text = [NSString stringWithFormat:@"%d",self.velocity];
 }
+- (IBAction)velocitySliderValueChanged:(id)sender {
+    UISlider *velocitySlider = (UISlider *)sender;
+    self.velocity = velocitySlider.value;
+//    [AudioEngine sharedEngine].instrumentsNode.volume = self.velocity/100.0f;
+//    [[AudioEngine sharedEngine].instrumentsNode sendPressure:velocity onChannel:2];
+    [[AudioEngine sharedEngine].instrumentsNode sendController:7 withValue:self.velocity onChannel:2];
+//    [[AudioEngine sharedEngine].instrumentsNode sendMIDIEvent:'\xd0' data1:velocity];
+//    MusicDeviceMIDIEvent([MidiAudioManager sharedManager].samplerUnit, '\xd0', velocity, 0, 0);
+}
 
 #pragma mark recording
 //开始结束录音
@@ -322,7 +331,9 @@ static void pianoMIDIInputProc(const MIDIPacketList *pktlist,
         } else if (mes == 0xB0) {
             NSLog(@"cc number = %2.2x / data = %2.2x / channel = %2.2x",
                   packet->data[1], packet->data[2], ch);
-        } else {
+        } else if (mes == 0xA0){
+            [[AudioEngine sharedEngine].instrumentsNode sendController:7 withValue:packet->data[2] onChannel:2];
+        }else {
             NSLog(@"etc");
         }
         
