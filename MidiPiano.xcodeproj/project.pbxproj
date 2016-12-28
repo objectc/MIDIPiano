@@ -30,7 +30,6 @@
 		175ACB491E1279F00019668B /* uoi_trumpet.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB421E1279F00019668B /* uoi_trumpet.sf2 */; };
 		175ACB551E127AF60019668B /* trumpet_sus.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB511E127AF60019668B /* trumpet_sus.sf2 */; };
 		175ACB571E1286B70019668B /* gs_instruments.dls in Resources */ = {isa = PBXBuildFile; fileRef = 175ACB561E1286B70019668B /* gs_instruments.dls */; };
-		175ACB5A1E1292720019668B /* MIDIController.m in Sources */ = {isa = PBXBuildFile; fileRef = 175ACB591E1292720019668B /* MIDIController.m */; };
 		177650691DD4CF250002F3F0 /* AudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 177650681DD4CF250002F3F0 /* AudioEngine.m */; };
 		177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */ = {isa = PBXBuildFile; fileRef = 1776506F1DD56F120002F3F0 /* EZAudioFFT.m */; };
 		177650731DD56F120002F3F0 /* EZAudioUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 177650711DD56F120002F3F0 /* EZAudioUtilities.m */; };
@@ -78,8 +77,6 @@
 		175ACB421E1279F00019668B /* uoi_trumpet.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = uoi_trumpet.sf2; sourceTree = "<group>"; };
 		175ACB511E127AF60019668B /* trumpet_sus.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = trumpet_sus.sf2; sourceTree = "<group>"; };
 		175ACB561E1286B70019668B /* gs_instruments.dls */ = {isa = PBXFileReference; lastKnownFileType = file; path = gs_instruments.dls; sourceTree = "<group>"; };
-		175ACB581E1292720019668B /* MIDIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDIController.h; sourceTree = "<group>"; };
-		175ACB591E1292720019668B /* MIDIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIDIController.m; sourceTree = "<group>"; };
 		177650671DD4CF250002F3F0 /* AudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEngine.h; sourceTree = "<group>"; };
 		177650681DD4CF250002F3F0 /* AudioEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEngine.m; sourceTree = "<group>"; };
 		1776506E1DD56F120002F3F0 /* EZAudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioFFT.h; sourceTree = "<group>"; };
@@ -216,8 +213,6 @@
 		1776506D1DD56F120002F3F0 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
-				175ACB581E1292720019668B /* MIDIController.h */,
-				175ACB591E1292720019668B /* MIDIController.m */,
 				1776506E1DD56F120002F3F0 /* EZAudioFFT.h */,
 				1776506F1DD56F120002F3F0 /* EZAudioFFT.m */,
 				177650741DD578F20002F3F0 /* TPCircularBuffer.c */,
@@ -334,7 +329,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175ACB5A1E1292720019668B /* MIDIController.m in Sources */,
 				177650721DD56F120002F3F0 /* EZAudioFFT.m in Sources */,
 				17D902381DE5E3B2007E5B5F /* MetronomeViewController.m in Sources */,
 				174105981DB7AB9A00F0B162 /* PianoViewController.m in Sources */,
