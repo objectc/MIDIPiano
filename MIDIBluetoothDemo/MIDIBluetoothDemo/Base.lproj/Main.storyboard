@@ -65,7 +65,7 @@
                                     <action selector="testButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="CXf-5A-t4J"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="48" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yVa-5C-V7i">
+                            <button opaque="NO" tag="60" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yVa-5C-V7i">
                                 <rect key="frame" x="16" y="380" width="46" height="200"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -80,7 +80,7 @@
                                     <action selector="noteUnPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="WmF-cD-VCN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="50" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u3H-aO-eWF">
+                            <button opaque="NO" tag="62" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u3H-aO-eWF">
                                 <rect key="frame" x="70" y="380" width="46" height="200"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -95,7 +95,7 @@
                                     <action selector="noteUnPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="RJD-2d-EF1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="52" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZh-Bn-Ivc">
+                            <button opaque="NO" tag="64" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZh-Bn-Ivc">
                                 <rect key="frame" x="124" y="380" width="46" height="200"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -110,7 +110,7 @@
                                     <action selector="noteUnPressed:" destination="vXZ-lx-hvc" eventType="touchUpOutside" id="pTB-xR-Dml"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="53" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eH4-7B-ZNR">
+                            <button opaque="NO" tag="65" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eH4-7B-ZNR">
                                 <rect key="frame" x="178" y="380" width="46" height="200"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -125,7 +125,7 @@
                                     <action selector="noteUnPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="WqI-mh-nIu"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="55" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Tp-tZ-Xi1">
+                            <button opaque="NO" tag="67" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Tp-tZ-Xi1">
                                 <rect key="frame" x="232" y="380" width="46" height="200"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -140,7 +140,7 @@
                                     <action selector="noteUnPressed:" destination="vXZ-lx-hvc" eventType="touchUpOutside" id="l8h-FA-qEm"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="57" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dg8-du-zHx">
+                            <button opaque="NO" tag="69" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dg8-du-zHx">
                                 <rect key="frame" x="286" y="380" width="46" height="200"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -246,8 +246,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="oc6-ub-sQI"/>
                                 <exclude reference="xAB-ZO-2dw"/>
+                                <exclude reference="oc6-ub-sQI"/>
                                 <exclude reference="ZLp-Mh-JYb"/>
                             </mask>
                         </variation>
