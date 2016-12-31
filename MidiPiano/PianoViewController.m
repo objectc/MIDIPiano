@@ -242,6 +242,7 @@ const char * noteForMidiNumber(int midiNumber) {
 - (IBAction)velocitySliderValueChanged:(id)sender {
     UISlider *velocitySlider = (UISlider *)sender;
     self.velocity = velocitySlider.value;
+    self.velocityLabel.text = [NSString stringWithFormat:@"%d",self.velocity];
 //    [AudioEngine sharedEngine].instrumentsNode.volume = self.velocity/100.0f;
 //    [[AudioEngine sharedEngine].instrumentsNode sendPressure:velocity onChannel:2];
     [[AudioEngine sharedEngine].instrumentsNode sendController:7 withValue:self.velocity onChannel:2];
