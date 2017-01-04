@@ -26,8 +26,6 @@ class ViewController: UIViewController  {
 		midi = Midi()
         notePressed = 0
 		super.init(coder: aDecoder)!
-		
-		NotificationCenter.default.addObserver(self, selector: #selector(ViewController.gotLatency(_:)), name: NSNotification.Name(rawValue: "latency"), object: nil)
 	}
 	
 	override func viewDidAppear(_ animated: Bool)
@@ -53,9 +51,6 @@ class ViewController: UIViewController  {
 		self.navigationController?.pushViewController(peripheral, animated: true)
 	}	
 
-	@IBAction func testButtonPressed(_ sender: AnyObject)
-	{
-	}
 	
 	/*
 		When a note is pressed on the mysterious blue keyboard a note is sent, in addtion to a
@@ -66,7 +61,7 @@ class ViewController: UIViewController  {
 		let note = sender.tag
 		self.sendNoteOn(UInt8(note))
 		
-		midi.sendTimestamp()
+//		midi.sendTimestamp()
 	}
 	
 	/*
@@ -78,6 +73,7 @@ class ViewController: UIViewController  {
 		self.sendNoteOff(UInt8(note))
 	}
 	
+    //音量调节
     @IBAction func velocityChangeAction(_ sender: Any) {
         let velocity = UInt8((sender as! UISlider).value)
         let note = UInt8(notePressed)
@@ -87,10 +83,13 @@ class ViewController: UIViewController  {
         
         midi.sendBytes(velocityChange, size: size)
     }
+    
+    //发送音符start指令
 	func sendNoteOn(_ noteNo : UInt8)
 	{
         notePressed = noteNo
 		let note      = noteNo
+        //三个参数分别为start标记（0x90），音符，velocity
 		let noteOn	  = [0x90, note, 127]
 		
 		let size  = UInt32(MemoryLayout<UInt8>.size * 3)
@@ -100,27 +99,13 @@ class ViewController: UIViewController  {
 	func sendNoteOff(_ noteNo : UInt8)
 	{
 		let note	= noteNo
+        //三个参数分别为start标记（0x80），音符，velocity
 		let noteOff	= [0x80, note, 0]
 	
 		let size	= UInt32(MemoryLayout<UInt8>.size * 3)
 		midi.sendBytes(noteOff, size: size)
 	}
 	
-	/*
-		The callback is triggered by NSNotificationCenter.
-		When a peripheral sends a timestamp message to the host, the host sends it back.
-		The peripheral then decodes the timestamp, compares it to it's current timestamp,
-		and reports half this value here, as an NSNotification.
-	*/
-	func gotLatency(_ notification : Notification)
-	{
-		let latency = midi.latency
-//		println("Last latency is \(latency)")
-		
-		DispatchQueue.main.async(execute: {
-				self.latencyLabel.text = String(latency) + "ms"
-			})
-	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
