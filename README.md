@@ -4,4 +4,4 @@ This project is based on [**AVAudioEngine**](https://developer.apple.com/documen
   2. Processing Node: Mixer(internal sound recording), Audio Unit Effect.
   3. Destination: Speaker, Headphones.
 
-Please watch Apple official documentation and WWDC videos for more details.
+Please visit Apple official documentation and WWDC videos for more details.
